@@ -1,0 +1,5 @@
+include README.rst
+include LICENSE
+include MANIFEST.in
+recursive-include assessment/templates *.html
+recursive-include assessment/static *.css

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Take a Survey</h2>
+  <ol>
+    {% for survey in incomplete_surveys %}
+      <li><a href="{{ survey.get_absolute_url }}">{{ survey }}</a></li>
+    {% endfor %}
+  </ol>
+  <h2>Completed Surveys</h2>
+  <ol>
+    {% for result in user_results %}
+      <li><a href="{{ result.get_absolute_url }}">{{ result.survey.name }} - {{ result.completed_on }}</a></li>
+    {% endfor %}
+  </ol>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <table class="table">
+    <tr>
+      <th>User Name</th>
+      <th>Survey Name</th>
+      <th>Date Completed</th>
+      <th>Score</th>
+    </tr>
+    {% for result in result_list %}
+      <tr>
+          <td><a href="{% url 'assessment:user_results' result.user.id %}">{{ result.user.username }}</a></td>
+          <td><a href="{{ result.get_absolute_url }}">{{ result.survey.name }}</a></td>
+          <td>{{ result.completed_on }}</td>
+          <td>{{ result.score }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
