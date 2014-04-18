@@ -9,6 +9,7 @@ Add 'assessment' to your installed_applications
 
     INSTALLED_APPS = (
         ...
+        'braces',
         'assessment',
         ...
     )
@@ -18,11 +19,16 @@ Modify your urls.py file to inlude
     urlpatterns = patterns(
         '',
         ...
-        url(r'^assessment/', include('assessment.urls', namespace='assessment', app_name='assessment')),
+        url(
+            regex=r'^assessment/',
+            include(module = 'assessment.urls',
+                    namespace = 'assessment',
+                    app_name = 'assessment', )
+            ),
         ...
     )
 
 # Requirements
 
- - Python3
+ - Python 3.4
  - Django 1.5+
