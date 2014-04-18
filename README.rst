@@ -3,7 +3,11 @@ django-assessment
 
 A django vote application which allows users to answer surveys.
 
-To use it, clone this repository as 'assessment'.
+--To use it, clone this repository as 'assessment'.--
+
+To use it in your project:
+
+    pip install git+https://github.com/vandorjw/django-assessment
 
 Add 'assessment' to your installed_applications
 
