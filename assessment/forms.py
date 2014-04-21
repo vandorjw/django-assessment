@@ -26,27 +26,37 @@ class ResultCreateForm(forms.ModelForm):
         # required for the save method.
         self.survey = survey
         for q in survey.question_set.all():
-            if (q.of_type == Question.TRUEFALSE or
-                    q.of_type == Question.MULTICHOICE):
+            if q.of_type == Question.MULTICHOICE:
                 self.fields.insert(
-                    # field rendering order
                     len(self.fields),
-                    # field name
                     str(q.id),
-                    # field type
                     forms.ModelChoiceField(
-                        # default is forms.Select
-                        widget=forms.RadioSelect,
+                        widget=forms.RadioSelect(attrs={'class': 'multichoice'}),
                         queryset=Choice.objects.filter(question=q),
-                        # prevent rendering empty radio
-                        empty_label=None),
+                        empty_label=None
+                    ),
                 )
-                # field label
+                self.fields[str(q.id)].label = str(q)
+            elif q.of_type == Question.TRUEFALSE:
+                self.fields.insert(
+                    len(self.fields),
+                    str(q.id),
+                    forms.ModelChoiceField(
+                        widget=forms.RadioSelect(attrs={'class': 'truefalse'}),
+                        queryset=Choice.objects.filter(question=q),
+                        empty_label=None
+                    ),
+                )
                 self.fields[str(q.id)].label = str(q)
             else:
                 self.fields.insert(len(self.fields),
-                                   str(q.id),
-                                   forms.CharField(max_length=500))
+                    str(q.id),
+                    forms.CharField(
+                        widget=forms.Textarea(attrs={'class': 'textarea', 
+                                                     'style':'width:100%'}),
+                        max_length=500
+                    ),
+                )
                 self.fields[str(q.id)].label = str(q)
 
     def save(self, *args, **kwargs):

@@ -1,11 +1,57 @@
 {% extends 'base.html' %}
+{% load staticfiles assessment_tags %}
+
+{% block extra_css %}
+  <link href="{% static 'bootstrap-docs.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
+
+  <div class="page-header">
+    <h1>{{ form.survey }}</h1>
+    <p>{{ form.survey.description }}</p>
+  </div>
+
   <div class="container">
     <form action="." method="post">{% csrf_token %}
-      <table class="table">
-        {{ form }}
-      </table>
+      <div class="container">
+      {% for field in form %}
+        <div class="row">
+          <div class="col-md-12">
+            <h3>{{ field.label }}</h3>
+          </div>
+          {% if field.errors %}
+          <div class="row">
+            <div class="bs-callout bs-callout-danger">
+                <h4>Please Correct the following errors:</h4>
+                {% for error in  field.errors %}
+                  <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        {% if field.field.widget.attrs.class == "truefalse" %}
+        <div class="row">
+          {% for choice in field %}
+            <div class="col-md-6">{{ choice }}</div>
+          {% endfor %}
+        </div>
+        {% elif field.field.widget.attrs.class == "multichoice" %}
+          {% for choice in field %}
+            <div class="row">
+              <div class="col-md-12">{{ choice }}</div>
+            </div>
+          {% endfor %}
+        {% elif field.field.widget.attrs.class == "textarea" %}
+          <div class="row">
+            <div class="col-md-12">{{ field }}</div>
+          </div>
+        {% endif %}
+
+      {% endfor %}
+      </div>
       <input type="submit"
              value="Submit Survey Form"
              class="btn btn-lg btn-warning btn-block" />

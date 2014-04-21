@@ -17,6 +17,8 @@ class Survey(models.Model):
     pub_date = models.DateTimeField(
         auto_now=True, default=datetime.datetime.now)
     is_active = models.BooleanField(default=True)
+    due_date = models.DateTimeField(
+        auto_now=False, default=datetime.datetime.now)
 
     class Meta:
         app_label = 'assessment'

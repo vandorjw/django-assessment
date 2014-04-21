@@ -66,18 +66,6 @@ class ResultDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class ResultCreateView(LoginRequiredMixin, generic.CreateView):
-    """
-    If this form is required in another view, the arguments can also be
-    passed to the form as followes:
-
-    >> def get_context_data(self, **kwargs):
-    >>    context = super(ResultCreateView, self).get_context_data(**kwargs)
-    >>    survey = Survey.objects.get(slug=self.kwargs['slug'])
-    >>    user = self.request.user
-    >>    answer_form = ResultCreateForm(survey, user)
-    >>    context['my_form'] = answer_form
-
-    """
     model = Result
     template_name = 'assessment/survey_do.html'
     form_class = ResultCreateForm
@@ -87,3 +75,4 @@ class ResultCreateView(LoginRequiredMixin, generic.CreateView):
         kwargs['survey'] = Survey.objects.get(slug=self.kwargs['slug'])
         kwargs['user'] = self.request.user
         return kwargs
+
