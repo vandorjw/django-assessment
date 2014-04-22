@@ -26,8 +26,7 @@ class SurveyListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(SurveyListView, self).get_context_data(**kwargs)
-        context['incomplete_surveys'] = Survey.objects.filter(
-            is_active=True).exclude(
+        context['incomplete_surveys'] = Survey.surveys.exclude(
                 results__in=self.request.user.results.all()
         )
         context['user_results'] = self.request.user.results.all()

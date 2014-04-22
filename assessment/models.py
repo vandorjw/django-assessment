@@ -7,18 +7,22 @@ try:
     User = get_user_model()
 except ImportError:
     from django.contrib.auth.models import User
+from assessment.managers import SurveyManager
 
 
 @python_2_unicode_compatible
 class Survey(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
+    is_active = models.BooleanField(default=True)
     description = models.TextField()
     pub_date = models.DateTimeField(
-        auto_now=True, default=datetime.datetime.now)
-    is_active = models.BooleanField(default=True)
+        auto_now=False, default=datetime.datetime.now)
     due_date = models.DateTimeField(
         auto_now=False, default=datetime.datetime.now)
+
+    objects = models.Manager()
+    surveys = SurveyManager()
 
     class Meta:
         app_label = 'assessment'
@@ -61,7 +65,7 @@ class Question(models.Model):
 
 @python_2_unicode_compatible
 class Choice(models.Model):
-    question = models.ForeignKey(Question)
+    question = models.ForeignKey(Question, related_name='choices')
     choice_value = models.CharField(max_length=255)
     is_correct = models.BooleanField(default=False)
 
@@ -83,6 +87,8 @@ class Result(models.Model):
         auto_now=True, default=datetime.datetime.now)
     score = models.CharField(
         max_length=10, default=0, editable=False)
+    score_percentage = models.PositiveIntegerField(
+        max_length=3, default=0, editable=False)
 
     class Meta:
         app_label = 'assessment'

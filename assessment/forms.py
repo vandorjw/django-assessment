@@ -1,3 +1,4 @@
+from math import floor
 from django import forms
 from assessment.models import Survey, Result, Question, Answer, Choice
 
@@ -120,11 +121,15 @@ class ResultCreateForm(forms.ModelForm):
             if (q.of_type == Question.TRUEFALSE or
                     q.of_type == Question.MULTICHOICE):
                 q_total += 1
-                for choice in q.choice_set.all():
+                for choice in q.choices.all():
                     if (choice.is_correct and
                             choice == self.cleaned_data[str(q.id)]):
                         q_correct += 1
         instance.score = "%s out of %s" % (q_correct, q_total)
+        if(q_total == 0):
+            instance.score_percentage = 000
+        else:
+            instance.score_percentage = floor((q_correct/q_total) * 100)
         instance.save()
         # The response has been saved. We now save the answers.
         result_id = instance.id

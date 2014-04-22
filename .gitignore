@@ -53,3 +53,5 @@ coverage.xml
 docs/_build/
 
 
+# SQLITE3
+db.sqlite3

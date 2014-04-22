@@ -6,6 +6,7 @@
   <p><strong>Survey Name: {{ result.survey }}</strong></p>
   <p><em>Answered By: {{ result.user }}</em></p>
   <p><em>Score: {{ result.score }}</em></p>
+  <p><em>Percentage: {{ result.score_percentage }}%</em></p>
 </div><!--./page-header -->
 
 <div class="container">
@@ -16,7 +17,7 @@
     </tr>
     {% for answer in result.answers.all %}
     <tr>
-      <td>{{answer.question }}</td>
+      <td>{{ answer.question }}</td>
       <td>{{ answer }}</td>
     </tr>
     {% endfor %}
