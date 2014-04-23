@@ -90,7 +90,7 @@ setup(
     test_suite='runtests.runtests',
     install_requires=[
         'django>=1.6.0',
-        'django-braces>=0.0.1',
+        'django-braces>=1.4.0',
         ],
     zip_safe=False,
 )

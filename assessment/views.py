@@ -39,6 +39,12 @@ class UserResultListView(LoginRequiredMixin, generic.ListView):
     model = Result
     template_name = 'assessment/user_results.html'
 
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_staff:
+            return super(SurveyResultListView, self).get(request, *args, **kwargs)
+        else:
+            return redirect('assessment:survey_list')
+
     def get_context_data(self, **kwargs):
         context = super(UserResultListView, self).get_context_data(**kwargs)
         context['results'] = Result.objects.filter(user=self.kwargs['pk'])
@@ -56,9 +62,9 @@ class SurveyResultListView(LoginRequiredMixin, generic.ListView):
 
     def get(self, request, *args, **kwargs):
         if self.request.user.is_staff:
-            return super(ResultDetailView, self).get(request, *args, **kwargs)
+            return super(SurveyResultListView, self).get(request, *args, **kwargs)
         else:
-            return redirect('assessment:assessment_surveys')
+            return redirect('assessment:survey_list')
 
     def get_context_data(self, **kwargs):
         context = super(SurveyResultListView, self).get_context_data(**kwargs)
@@ -77,7 +83,7 @@ class ResultDetailView(LoginRequiredMixin, generic.DetailView):
             self.request.user.is_staff ):
             return super(ResultDetailView, self).get(request, *args, **kwargs)
         else:
-            return redirect('assessment:assessment_surveys')
+            return redirect('assessment:survey_list')
 
 
 class ResultCreateView(LoginRequiredMixin, generic.CreateView):
