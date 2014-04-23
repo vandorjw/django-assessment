@@ -54,6 +54,12 @@ class SurveyResultListView(LoginRequiredMixin, generic.ListView):
     model = Result
     template_name = 'assessment/survey_result_list.html'
 
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_staff:
+            return super(ResultDetailView, self).get(request, *args, **kwargs)
+        else:
+            return redirect('assessment:assessment_surveys')
+
     def get_context_data(self, **kwargs):
         context = super(SurveyResultListView, self).get_context_data(**kwargs)
         context['results'] = Result.objects.filter(
@@ -69,10 +75,9 @@ class ResultDetailView(LoginRequiredMixin, generic.DetailView):
         self.object = self.get_object()
         if (self.object.user == self.request.user or
             self.request.user.is_staff ):
-            context = self.get_context_data(object=self.object)
-            return self.render_to_response(context)
+            return super(ResultDetailView, self).get(request, *args, **kwargs)
         else:
-            return redirect('assessment:survey_list')
+            return redirect('assessment:assessment_surveys')
 
 
 class ResultCreateView(LoginRequiredMixin, generic.CreateView):
