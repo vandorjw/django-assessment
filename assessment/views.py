@@ -41,7 +41,7 @@ class UserResultListView(LoginRequiredMixin, generic.ListView):
 
     def get(self, request, *args, **kwargs):
         if self.request.user.is_staff:
-            return super(SurveyResultListView, self).get(request, *args, **kwargs)
+            return super(UserResultListView, self).get(request, *args, **kwargs)
         else:
             return redirect('assessment:survey_list')
 
@@ -52,6 +52,13 @@ class UserResultListView(LoginRequiredMixin, generic.ListView):
 
 
 class ResultListView(LoginRequiredMixin, generic.ListView):
+
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_staff:
+            return super(ResultListView, self).get(request, *args, **kwargs)
+        else:
+            return redirect('assessment:survey_list')
+
     model = Result
     template_name = 'assessment/result_list.html'
 
