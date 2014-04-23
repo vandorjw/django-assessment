@@ -12,8 +12,13 @@ except ImportError:
 
 
 class AssessmentIndex(LoginRequiredMixin, generic.TemplateView):
-    """alternative - redirect to SurveyListView"""
     template_name = 'assessment/index.html'
+
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_staff:
+            return super(AssessmentIndex, self).get(request, *args, **kwargs)
+        else:
+            return redirect('assessment:survey_list')
 
     def get_context_data(self, **kwargs):
         context = super(AssessmentIndex, self).get_context_data(**kwargs)
