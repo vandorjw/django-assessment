@@ -22,8 +22,8 @@ Modify your urls.py file to inlude
         '',
         ...
         url(
-            regex=r'^assessment/',
-            include(module = 'assessment.urls',
+            r'^assessment/',
+            include('assessment.urls',
                     namespace = 'assessment',
                     app_name = 'assessment', )
             ),
@@ -32,5 +32,6 @@ Modify your urls.py file to inlude
 
 # Requirements
 
- - Python 3.4
+ - Python 3+
+ - django-braces
  - Django 1.5+
