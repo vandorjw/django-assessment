@@ -7,6 +7,7 @@ try:
     User = get_user_model()
 except ImportError:
     from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 from assessment.managers import SurveyManager
 
 
@@ -20,6 +21,13 @@ class Survey(models.Model):
         auto_now=False, default=datetime.datetime.now)
     due_date = models.DateTimeField(
         auto_now=False, default=datetime.datetime.now)
+    visible_for = models.ManyToManyField(
+        Group,
+        blank=True,
+        null=True,
+        help_text="When no groups are assigned"
+                  " the survey will be available to all users."
+     )
 
     objects = models.Manager()
     surveys = SurveyManager()

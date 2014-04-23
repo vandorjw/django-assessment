@@ -1,5 +1,7 @@
 from django.views import generic
+from django.shortcuts import redirect
 from braces.views import LoginRequiredMixin
+from braces.views import GroupRequiredMixin
 from assessment.models import Survey, Result, Question, Answer
 from assessment.forms import ResultCreateForm
 try:
@@ -68,6 +70,20 @@ class ResultCreateView(LoginRequiredMixin, generic.CreateView):
     model = Result
     template_name = 'assessment/survey_do.html'
     form_class = ResultCreateForm
+
+    def get(self, request, *args, **kwargs):
+        if Result.objects.filter(
+            survey = Survey.objects.get(slug=self.kwargs['slug']),
+            user = self.request.user).exists():
+            return redirect('assessment:survey_list')
+        return super(ResultCreateView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if Result.objects.filter(
+            survey = Survey.objects.get(slug=self.kwargs['slug']),
+            user = self.request.user).exists():
+            return redirect('assessment:survey_list')
+        return super(ResultCreateView, self).post(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super(ResultCreateView, self).get_form_kwargs()
