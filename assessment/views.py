@@ -65,6 +65,15 @@ class ResultDetailView(LoginRequiredMixin, generic.DetailView):
     model = Result
     template_name = 'assessment/survey_result.html'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if (self.object.user == self.request.user or
+            self.request.user.is_staff ):
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
+        else:
+            return redirect('assessment:survey_list')
+
 
 class ResultCreateView(LoginRequiredMixin, generic.CreateView):
     model = Result
