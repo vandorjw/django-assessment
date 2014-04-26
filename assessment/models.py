@@ -20,14 +20,7 @@ class Survey(models.Model):
     pub_date = models.DateTimeField(
         auto_now=False, default=datetime.datetime.now)
     due_date = models.DateTimeField(
-        auto_now=False, default=datetime.datetime.now)
-    visible_for = models.ManyToManyField(
-        Group,
-        blank=True,
-        null=True,
-        help_text="When no groups are assigned"
-                  " the survey will be available to all users."
-     )
+        auto_now=False, null=True, blank=True)
 
     objects = models.Manager()
     surveys = SurveyManager()
@@ -42,6 +35,20 @@ class Survey(models.Model):
     def get_absolute_url(self):
         return reverse('assessment:survey_do',
                        kwargs={'slug': self.slug})
+
+
+@python_2_unicode_compatible
+class SurveyGroup(models.Model):
+    name = models.CharField(max_length=254)
+    surveys = models.ManyToManyField(Survey, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        app_label = 'assessment'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
 
 
 @python_2_unicode_compatible

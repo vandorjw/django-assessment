@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from assessment.models import Survey, Question, Choice
+from assessment.models import Survey, SurveyGroup, Question, Choice
 
 
 class SurveyForm(forms.ModelForm):
@@ -12,13 +12,14 @@ class SurveyForm(forms.ModelForm):
         cleaned_data = super(SurveyForm, self).clean()
         due_date = cleaned_data.get("due_date")
         pub_date = cleaned_data.get("pub_date")
-        if due_date < pub_date:
-            raise forms.ValidationError(
-                "Publication Date: %(pub_date)s, must not be AFTER the Due Date: %(due_date)s",
-                code='date_error',
-                params={'pub_date': pub_date, 
-                        'due_date': due_date, },
-            )
+        if due_date != None:
+            if due_date < pub_date:
+                raise forms.ValidationError(
+                    "Publication Date: %(pub_date)s, must not be AFTER the Due Date: %(due_date)s",
+                    code='date_error',
+                    params={'pub_date': pub_date, 
+                            'due_date': due_date, },
+                )
         return cleaned_data
 
 
@@ -59,3 +60,4 @@ class SurveyAdmin(admin.ModelAdmin):
 
 admin.site.register(Survey, SurveyAdmin)
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(SurveyGroup)
