@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import admin
 from assessment.models import Survey, SurveyGroup, Question, Choice
+from assessment.models import Profile
 
 
 class SurveyForm(forms.ModelForm):
@@ -12,7 +13,7 @@ class SurveyForm(forms.ModelForm):
         cleaned_data = super(SurveyForm, self).clean()
         due_date = cleaned_data.get("due_date")
         pub_date = cleaned_data.get("pub_date")
-        if due_date != None:
+        if due_date is not None:
             if due_date < pub_date:
                 raise forms.ValidationError(
                     "Publication Date: %(pub_date)s, must not be AFTER the Due Date: %(due_date)s",
@@ -57,7 +58,11 @@ class SurveyAdmin(admin.ModelAdmin):
         'is_active', )
 
 
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', )
+
 
 admin.site.register(Survey, SurveyAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(SurveyGroup)
+admin.site.register(Profile, ProfileAdmin)

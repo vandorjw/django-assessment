@@ -1,9 +1,11 @@
 from math import floor
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from assessment.models import Survey, Result, Question, Answer, Choice
+from assessment.models import Profile
 
 
-class ResultCreateForm(forms.ModelForm):
+class SurveyDoForm(forms.ModelForm):
     """
     This form creates a Result object. When initializing the form, it
     needs to know which survey instance it is dealing with and the user.
@@ -21,7 +23,7 @@ class ResultCreateForm(forms.ModelForm):
 
     """
     def __init__(self, survey, user, *args, **kwargs):
-        super(ResultCreateForm, self).__init__(*args, **kwargs)
+        super(SurveyDoForm, self).__init__(*args, **kwargs)
         # required for the save method.
         self.user = user
         # required for the save method.
@@ -112,7 +114,7 @@ class ResultCreateForm(forms.ModelForm):
         Finally, the result instance is returned.
 
         """
-        instance = super(ResultCreateForm, self).save(commit=False)
+        instance = super(SurveyDoForm, self).save(commit=False)
         instance.user = self.user
         instance.survey = self.survey
         q_correct = 0
@@ -153,3 +155,10 @@ class ResultCreateForm(forms.ModelForm):
     class Meta:
         model = Result
         fields = '__all__'
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
