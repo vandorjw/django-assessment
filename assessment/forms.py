@@ -36,7 +36,8 @@ class SurveyDoForm(forms.ModelForm):
                     forms.ModelChoiceField(
                         widget=forms.RadioSelect(attrs={'class': 'multichoice'}),
                         queryset=Choice.objects.filter(question=q),
-                        empty_label=None
+                        empty_label=None,
+                        required=False,
                     ),
                 )
                 self.fields[str(q.id)].label = str(q)
@@ -47,7 +48,8 @@ class SurveyDoForm(forms.ModelForm):
                     forms.ModelChoiceField(
                         widget=forms.RadioSelect(attrs={'class': 'truefalse'}),
                         queryset=Choice.objects.filter(question=q),
-                        empty_label=None
+                        empty_label=None,
+                        required=False,
                     ),
                 )
                 self.fields[str(q.id)].label = str(q)
@@ -57,11 +59,21 @@ class SurveyDoForm(forms.ModelForm):
                     forms.CharField(
                         widget=forms.Textarea(attrs={'class': 'textarea', 
                                                      'style':'width:100%'}),
-                        max_length=500
+                        max_length=500,
+                        required=False,
                     ),
                 )
                 self.fields[str(q.id)].label = str(q)
 
+    def clean(self):
+        cleaned_data = super(SurveyDoForm, self).clean()
+        #if not len(cleaned_data) == 0:
+        for field in self.fields:
+            if cleaned_data.get(field):
+                return cleaned_data
+        raise forms.ValidationError("You must answer at least 1 question")
+            
+            
     def save(self, *args, **kwargs):
         """
         This form creates a Result Instance. Since survey, user, and
@@ -141,7 +153,10 @@ class SurveyDoForm(forms.ModelForm):
         q_answers = []
         for question in self.survey.question_set.all():
             # always append the 'cleaned_data', never the raw post data!
-            q_answers.append(self.cleaned_data[str(question.id)])
+            if self.cleaned_data[str(question.id)]:
+                q_answers.append(self.cleaned_data[str(question.id)])
+            else:
+                q_answers.append("Not Answered")
         zipped = zip(ans_ids, self.survey.question_set.all(), q_answers)
         data = [Answer(id=answer_id,
                        result=instance,

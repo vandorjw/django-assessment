@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from assessment.models import Survey, SurveyGroup, Question, Choice
+from assessment.models import Survey, SurveyGroup, Question, Choice, Result
 from assessment.models import Profile
 
 
@@ -66,3 +66,4 @@ admin.site.register(Survey, SurveyAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(SurveyGroup)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Result)
