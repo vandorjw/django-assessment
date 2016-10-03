@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.staticfiles',
     'rest_framework',
+    'braces',
     'assessment'
 )
 
@@ -74,3 +75,4 @@ TEMPLATES = [
         },
     },
 ]
+
