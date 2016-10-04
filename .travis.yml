@@ -1,0 +1,23 @@
+sudo: false
+language: python
+python:
+  - "3.4"
+
+cache: false
+
+install:
+  - pip install -e .
+
+env:
+- DJANGO_ADMIN_MODULE=demo.settings
+
+script:
+  - django-admin test
+
+notifications:
+  email: false
+
+branches:
+  only:
+    - master
+    - development
