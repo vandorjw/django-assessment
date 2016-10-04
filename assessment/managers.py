@@ -6,13 +6,13 @@ class SurveyManager(models.Manager):
     """
     How to use this manager:
 
-    1. Retreive all active surveys:
+    1. Retrieve all active surveys:
     >> survey_list = Survey.surveys.all()
 
-    2. Retreive all surveys where the over 50% failed:
+    2. Retrieve all surveys where the over 50% failed:
     >> survey_list = Survey.surveys.avg_failed()
 
-    3. Retreive all surveys where the over 50% passed:
+    3. Retrieve all surveys where the over 50% passed:
     >> survey_list = Survey.surveys.avg_passed()
 
     """
@@ -21,8 +21,8 @@ class SurveyManager(models.Manager):
         and the survey is not past the due_date. """
         return super(SurveyManager, self).get_queryset().filter(
             is_active = True).exclude(
-                pub_date__gte = datetime.now()).exclude(
-                    due_date__lte = datetime.now())
+            start_date_time__gte=datetime.now()).exclude(
+            end_date_time__lte=datetime.now())
 
     def avg_failed(self):
         """
