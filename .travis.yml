@@ -8,9 +8,6 @@ cache: false
 install:
   - pip install -e .
 
-env:
-- DJANGO_ADMIN_MODULE=demo.settings
-
 script:
   - django-admin test
 
