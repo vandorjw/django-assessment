@@ -1,7 +1,6 @@
 from math import floor
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from assessment.models import Survey, Result, Question, Answer, Choice
+from assessment.models import Result, Question, Answer, Choice
 from assessment.models import Profile
 
 
@@ -100,7 +99,7 @@ class SurveyDoForm(forms.ModelForm):
         would put ENORMOUS strain on our database, the answers are saved
         in bulk.
 
-        Each answer instance must have the folllowing:
+        Each answer instance must have the following:
 
         >> result: This is the id of the Result instance we just saved.
         >> question: This is id of each question in the survey.
@@ -140,7 +139,7 @@ class SurveyDoForm(forms.ModelForm):
                             choice == self.cleaned_data[str(q.id)]):
                         q_correct += 1
         instance.score = "%s out of %s" % (q_correct, q_total)
-        if(q_total == 0):
+        if q_total == 0:
             instance.score_percentage = 000
         else:
             instance.score_percentage = floor((q_correct/q_total) * 100)

@@ -1,17 +1,17 @@
 from django.views import generic
 from django.shortcuts import redirect
-from django.core.exceptions import ObjectDoesNotExist
 from braces.views import LoginRequiredMixin
 from braces.views import StaffuserRequiredMixin
-from assessment.models import Survey, Result, Question, Answer, Profile
+from assessment.models import Survey, Result, Profile
 from assessment.forms import SurveyDoForm, ProfileForm
 
 try:
     from django.contrib.auth import get_user_model
+
     User = get_user_model()
 except ImportError:
     from django.contrib.auth.models import User
-   
+
 
 class Index(LoginRequiredMixin,
             generic.TemplateView):
@@ -20,22 +20,22 @@ class Index(LoginRequiredMixin,
     def get_context_data(self, **kwargs):
         context = super(Index, self).get_context_data(**kwargs)
         if self.request.user.is_staff:
-          return context
+            return context
         else:
-          return context
+            return context
 
 
 class ProfileCreate(LoginRequiredMixin,
-                   StaffuserRequiredMixin,
-                   generic.CreateView):
+                    StaffuserRequiredMixin,
+                    generic.CreateView):
     model = Profile
     template_name = 'assessment/profile_form.html'
     form_class = ProfileForm
 
 
 class ProfileUpdate(LoginRequiredMixin,
-                   StaffuserRequiredMixin,
-                   generic.UpdateView):
+                    StaffuserRequiredMixin,
+                    generic.UpdateView):
     model = Profile
     template_name = 'assessment/profile_form.html'
     form_class = ProfileForm
@@ -84,17 +84,16 @@ class ResultByUser(LoginRequiredMixin,
 
 
 class ProfileView(LoginRequiredMixin,
-              generic.DetailView):
+                  generic.DetailView):
     template_name = 'assessment/profile_detail.html'
     model = Profile
     slug_field = 'uuid'
     slug_url_kwarg = 'uuid'
 
-
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         if (self.object.user == self.request.user or
-            self.request.user.is_staff ):
+                self.request.user.is_staff):
             return super(ProfileView, self).get(request, *args, **kwargs)
         else:
             return redirect('assessment:index')
@@ -107,7 +106,7 @@ class ProfileResults(LoginRequiredMixin, generic.ListView):
     def get(self, request, *args, **kwargs):
         self.profile = Profile.objects.get(uuid=self.kwargs['uuid'])
         if (self.profile.user == self.request.user or
-            self.request.user.is_staff ):
+                self.request.user.is_staff):
             return super(ProfileResults, self).get(request, *args, **kwargs)
         else:
             return redirect('assessment:index')
@@ -117,6 +116,7 @@ class ProfileResults(LoginRequiredMixin, generic.ListView):
         context['profile'] = Profile.objects.get(uuid=self.kwargs['uuid'])
         return context
 
+
 class ProfileSurveys(LoginRequiredMixin, generic.ListView):
     model = Surveys
     template_name = 'assessment/profile_survey_list.html'
@@ -124,7 +124,7 @@ class ProfileSurveys(LoginRequiredMixin, generic.ListView):
     def get(self, request, *args, **kwargs):
         self.profile = Profile.objects.get(uuid=self.kwargs['uuid'])
         if (self.profile.user == self.request.user or
-            self.request.user.is_staff ):
+                self.request.user.is_staff):
             return super(ProfileSurveys, self).get(request, *args, **kwargs)
         else:
             return redirect('assessment:index')
@@ -144,7 +144,7 @@ class ResultDetail(LoginRequiredMixin, generic.DetailView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         if (self.object.user == self.request.user or
-            self.request.user.is_staff ):
+                self.request.user.is_staff):
             return super(ResultDetail, self).get(request, *args, **kwargs)
         else:
             return redirect('assessment:index')
@@ -157,15 +157,15 @@ class SurveyDo(LoginRequiredMixin, generic.CreateView):
 
     def get(self, request, *args, **kwargs):
         if Result.objects.filter(
-            survey = Survey.objects.get(slug=self.kwargs['slug']),
-            user = self.request.user).exists():
+                survey=Survey.objects.get(slug=self.kwargs['slug']),
+                user=self.request.user).exists():
             return redirect('assessment:index')
         return super(SurveyDo, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if Result.objects.filter(
-            survey = Survey.objects.get(slug=self.kwargs['slug']),
-            user = self.request.user).exists():
+                survey=Survey.objects.get(slug=self.kwargs['slug']),
+                user=self.request.user).exists():
             return redirect('assessment:index')
         return super(SurveyDo, self).post(request, *args, **kwargs)
 

@@ -1,21 +1,25 @@
 from django import template
 register = template.Library()
 
+
 @register.filter('is_checkboxes')
 def is_checkboxes(form_field_obj):
-    return (form_field_obj.field.widget.__class__.__name__ == "CheckboxSelectMultiple")
+    return form_field_obj.field.widget.__class__.__name__ == "CheckboxSelectMultiple"
+
 
 @register.filter('is_select')
 def is_select(form_field_obj):
-    return (form_field_obj.field.widget.__class__.__name__ == "Select")
+    return form_field_obj.field.widget.__class__.__name__ == "Select"
+
 
 @register.filter('is_radio')
 def is_radio(form_field_obj):
-    return (form_field_obj.field.widget.__class__.__name__ == "RadioSelect")
+    return form_field_obj.field.widget.__class__.__name__ == "RadioSelect"
+
 
 @register.filter('is_textarea')
 def is_textarea(form_field_obj):
-    return (form_field_obj.field.widget.__class__.__name__ == "Textarea")
+    return form_field_obj.field.widget.__class__.__name__ == "Textarea"
 
 
 @register.filter('partition')
@@ -50,6 +54,7 @@ def partition(lst, n):
         stop = start + len(lst[i::n])
         yield lst[start:stop]
         start = stop
+
 
 @register.filter('partition_horizontal')
 def partition_horizontal(lst, n):

@@ -45,6 +45,8 @@ coverage.xml
 # Rope
 .ropeproject
 
+.idea
+
 # Django stuff:
 *.log
 *.pot
@@ -55,3 +57,5 @@ docs/_build/
 
 # SQLITE3
 db.sqlite3
+
+*.db

@@ -11,15 +11,15 @@ class SurveyForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(SurveyForm, self).clean()
-        due_date = cleaned_data.get("due_date")
-        pub_date = cleaned_data.get("pub_date")
-        if due_date is not None:
-            if due_date < pub_date:
+        end_date_time = cleaned_data.get("end_date_time")
+        start_date_time = cleaned_data.get("start_date_time")
+        if end_date_time is not None:
+            if end_date_time < start_date_time:
                 raise forms.ValidationError(
-                    "Publication Date: %(pub_date)s, must not be AFTER the Due Date: %(due_date)s",
+                    "Publication Date: %(start_date_time)s, must not be AFTER the Due Date: %(end_date_time)s",
                     code='date_error',
-                    params={'pub_date': pub_date, 
-                            'due_date': due_date, },
+                    params={'start_date_time': start_date_time,
+                            'end_date_time': end_date_time, },
                 )
         return cleaned_data
 
@@ -53,8 +53,8 @@ class SurveyAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'slug',
-        'pub_date',
-        'due_date',
+        'start_date_time',
+        'end_date_time',
         'is_active', )
 
 

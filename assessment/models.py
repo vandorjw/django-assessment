@@ -1,5 +1,5 @@
 import datetime
-from uuid import uuid4
+import uuid
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
@@ -7,21 +7,44 @@ from assessment.managers import SurveyManager
 
 
 class Survey(models.Model):
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique=True)
-    is_active = models.BooleanField(default=True)
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
+    name = models.CharField(
+        max_length=160
+    )
+    slug = models.SlugField(
+        max_length=160,
+        unique=True,
+    )
+    is_active = models.BooleanField(
+        default=True,
+    )
     description = models.TextField()
-    pub_date = models.DateTimeField(
-        auto_now=False, default=datetime.datetime.now)
-    due_date = models.DateTimeField(
-        auto_now=False, null=True, blank=True)
+    start_date_time = models.DateTimeField(
+        auto_now=False,
+        default=datetime.datetime.now,
+    )
+    end_date_time = models.DateTimeField(
+        auto_now=False,
+        null=True,
+        blank=True,
+    )
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="assessment_surveys",
+    )
 
     objects = models.Manager()
     surveys = SurveyManager()
 
     class Meta:
         app_label = 'assessment'
-        ordering = ['pub_date']
+        ordering = ['is_active', 'start_date_time']
 
     def __str__(self):
         return self.name
@@ -31,10 +54,46 @@ class Survey(models.Model):
                        kwargs={'slug': self.slug})
 
 
+class SurveyAdmin(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
+    admin = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+    )
+    survey = models.ForeignKey(
+        Survey,
+    )
+
+    class Meta:
+        app_label = 'assessment'
+
+    def __str__(self):
+        return "{user_name} is admin on: {survey_name}".format(
+            user_name=self.admin.username,
+            survey_name=self.survey.name,
+        )
+
+
 class SurveyGroup(models.Model):
-    name = models.CharField(max_length=254)
-    surveys = models.ManyToManyField(Survey, related_name='surveygroups', null=True, blank=True)
-    is_active = models.BooleanField(default=True)
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
+    name = models.CharField(
+        max_length=160,
+    )
+    surveys = models.ManyToManyField(
+        Survey,
+        related_name='surveygroups',
+        blank=True,
+    )
+    is_active = models.BooleanField(
+        default=True,
+    )
 
     class Meta:
         app_label = 'assessment'
@@ -45,27 +104,32 @@ class SurveyGroup(models.Model):
 
 
 class Profile(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, related_name="profile")
+        settings.AUTH_USER_MODEL,
+        related_name="assessment_profile",
+    )
     surveys = models.ManyToManyField(
-        Survey, related_name='profile_surveys', null=True, blank=True)
-    surveygroups = models.ManyToManyField(
-        SurveyGroup, related_name='profile_surveygroups', null=True, blank=True)
-    uuid = models.CharField(
-        max_length=36, editable=False, unique=True, blank=True)
+        Survey,
+        related_name='profile_surveys',
+        blank=True,
+    )
+    survey_groups = models.ManyToManyField(
+        SurveyGroup,
+        related_name='profile_surveygroups',
+        blank=True,
+    )
 
     def __str__(self):
         return self.user.get_full_name()
 
     def get_absolute_url(self):
         return reverse('assessment:profile_detail',
-                       kwargs={'uuid': self.uuid})
-
-    def save(self, *args, **kwargs):
-        super(Profile, self).save(*args, **kwargs)
-        if not self.uuid:
-            self.uuid = str(uuid4())
-            super(Profile, self).save(*args, **kwargs)
+                       kwargs={'id': self.id})
 
 
 class Question(models.Model):
@@ -78,13 +142,17 @@ class Question(models.Model):
         (MULTICHOICE, 'Multiple Choice'),
         (TEXT, 'Text'),
     )
-
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
     survey = models.ForeignKey(Survey)
     question = models.CharField(max_length=255)
     of_type = models.IntegerField(
-        max_length=1,
         choices=QUESTION_TYPE,
-        default=TRUEFALSE)
+        default=TRUEFALSE,
+    )
 
     class Meta:
         app_label = 'assessment'
@@ -95,6 +163,11 @@ class Question(models.Model):
 
 
 class Choice(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
     question = models.ForeignKey(Question, related_name='choices')
     choice_value = models.CharField(max_length=255)
     is_correct = models.BooleanField(default=False)
@@ -108,18 +181,24 @@ class Choice(models.Model):
 
 
 class Result(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
     survey = models.ForeignKey(
-        Survey, related_name='results', editable=False)
+        Survey,
+        related_name='results',
+        editable=False,
+    )
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='results', editable=False)
+        settings.AUTH_USER_MODEL,
+        related_name='results',
+        editable=False,
+    )
     completed_on = models.DateTimeField(
-        auto_now=True, default=datetime.datetime.now)
-    score = models.CharField(
-        max_length=10, default=0, editable=False)
-    score_percentage = models.PositiveIntegerField(
-        max_length=3, default=0, editable=False)
-    uuid = models.CharField(
-        max_length=36, editable=False, unique=True, blank=True)
+        auto_now=True,
+    )
 
     class Meta:
         app_label = 'assessment'
@@ -130,20 +209,37 @@ class Result(models.Model):
 
     def get_absolute_url(self):
         return reverse('assessment:result_detail',
-                       kwargs={'uuid': self.uuid})
+                       kwargs={'id': self.id})
 
-    def save(self, *args, **kwargs):
-        super(Result, self).save(*args, **kwargs)
-        if not self.uuid:
-            self.uuid = str(uuid4())
-            super(Result, self).save(*args, **kwargs)
-        
+    def score(self):
+        if self.completed_on:
+            return 0
+        else:
+            return 0
+
+    def score_percentage(self):
+        if self.completed_on:
+            return "{percentage} %".format(percentage=0)
+        else:
+            return "{percentage} %".format(percentage=0)
+
 
 class Answer(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
     result = models.ForeignKey(
-        Result, related_name='answers', editable=False)
+        Result,
+        related_name='answers',
+        editable=False,
+    )
     question = models.ForeignKey(
-        Question, related_name='answers', editable=False)
+        Question,
+        related_name='answers',
+        editable=False,
+    )
     answer = models.TextField()
 
     class Meta:
@@ -151,4 +247,4 @@ class Answer(models.Model):
         unique_together = ('result', 'question')
 
     def __str__(self):
-        return "%s" % (self.answer)
+        return "{}".format(str(self.answer))
