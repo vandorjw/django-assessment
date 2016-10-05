@@ -1,37 +1,18 @@
-django-assessment
-=================
+Django-Assessment
+=====================
 
-A django vote application which allows users to answer surveys.
+.. image:: https://travis-ci.org/vandorjw/django-assessment.svg?branch=master
+    :target: https://travis-ci.org/vandorjw/django-assessment
 
-To use it in your project:
+Simple appllication for managing a survey/quiz within your Django Web Site.
 
-    pip install git+https://github.com/vandorjw/django-assessment
+Features
+--------
+* RESTful API
 
-Add 'assessment' to your installed_applications
+Online resources
+----------------
+* `Code repository <https://github.com/vandorjw/django-assessment>`_
+* Documentation
+* `Travis CI server <https://travis-ci.org/vandorjw/django-assessment>`_
 
-    INSTALLED_APPS = (
-        ...
-        'braces',
-        'assessment',
-        ...
-    )
-
-Modify your urls.py file to inlude
-
-    urlpatterns = patterns(
-        '',
-        ...
-        url(
-            r'^assessment/',
-            include('assessment.urls',
-                    namespace = 'assessment',
-                    app_name = 'assessment', )
-            ),
-        ...
-    )
-
-# Requirements
-
- - Python 3+
- - django-braces
- - Django 1.5+
