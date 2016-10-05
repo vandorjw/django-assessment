@@ -1,69 +1,54 @@
-from django import forms
+# -*- coding: utf-8 -*-
 from django.contrib import admin
-from assessment.models import Survey, SurveyGroup, Question, Choice, Result
-from assessment.models import Profile
+from parler.admin import TranslatableAdmin
+from assessment.models import (
+    Choice,
+    Profile,
+    Question,
+    Survey,
+    SurveyAdmin,
+    SurveyGroup,
+)
 
 
-class SurveyForm(forms.ModelForm):
-    class Meta:
-        model = Survey
-        fields = '__all__'
-
-    def clean(self):
-        cleaned_data = super(SurveyForm, self).clean()
-        end_date_time = cleaned_data.get("end_date_time")
-        start_date_time = cleaned_data.get("start_date_time")
-        if end_date_time is not None:
-            if end_date_time < start_date_time:
-                raise forms.ValidationError(
-                    "Publication Date: %(start_date_time)s, must not be AFTER the Due Date: %(end_date_time)s",
-                    code='date_error',
-                    params={'start_date_time': start_date_time,
-                            'end_date_time': end_date_time, },
-                )
-        return cleaned_data
-
-
-class ChoiceInline(admin.TabularInline):
-    model = Choice
-    extra = 1
-
-
-class QuestionAdmin(admin.ModelAdmin):
-    inlines = [
-        ChoiceInline,
+@admin.register(Choice)
+class ChoiceAdminConf(TranslatableAdmin):
+    list_display = [
+        'pk', 'question', 'value', 'is_correct',
     ]
-    list_display = (
-        'question',
-        'survey',
-        'of_type', )
 
 
-class QuestionInline(admin.TabularInline):
-    model = Question
-    extra = 1
-
-
-class SurveyAdmin(admin.ModelAdmin):
-    form = SurveyForm
-    inlines = [
-        QuestionInline,
+@admin.register(Profile)
+class ProfileAdminConf(admin.ModelAdmin):
+    list_display = [
+        'pk', 'user',
     ]
-    prepopulated_fields = {'slug': ('name',), }
-    list_display = (
-        'name',
-        'slug',
-        'start_date_time',
-        'end_date_time',
-        'is_active', )
 
 
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', )
+@admin.register(Question)
+class QuestionAdminConf(TranslatableAdmin):
+    list_display = [
+        'pk', 'survey', 'question', 'of_type',
+    ]
 
 
-admin.site.register(Survey, SurveyAdmin)
-admin.site.register(Question, QuestionAdmin)
-admin.site.register(SurveyGroup)
-admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Result)
+
+@admin.register(Survey)
+class SurveyAdminConf(TranslatableAdmin):
+    list_display = [
+        'pk', 'name', 'slug', 'owner', 'is_active', 'start_date_time', 'end_date_time',
+    ]
+
+
+@admin.register(SurveyAdmin)
+class SurveyAdminAdminConf(admin.ModelAdmin):
+    list_display = [
+        'pk', 'admin', 'survey',
+    ]
+
+
+@admin.register(SurveyGroup)
+class SurveyGroupAdminConf(admin.ModelAdmin):
+    list_display = [
+        'pk', 'name', 'is_active',
+    ]

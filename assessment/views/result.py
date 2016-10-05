@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 try:
     from django.contrib.auth import get_user_model
     User = get_user_model()
@@ -13,7 +14,7 @@ from assessment.models import Survey
 
 
 @api_view(['GET', ])
-def retrieve_results(request, uuid):
+def retrieve_result(request, uuid):
     """
     """
     if request.method == 'GET':

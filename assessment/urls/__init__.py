@@ -4,6 +4,10 @@ from django.conf.urls import include
 
 
 urlpatterns = [
-    url(r'^api/results/', include('assessment.urls.results')),
-    url(r'^api/surveys/', include('assessment.urls.surveys')),
+    url(r'^api/answer/', include('assessment.urls.answer')),
+    url(r'^api/choice/', include('assessment.urls.choice')),
+    url(r'^api/profile/', include('assessment.urls.profile')),
+    url(r'^api/question/', include('assessment.urls.question')),
+    url(r'^api/result/', include('assessment.urls.result')),
+    url(r'^api/survey/', include('assessment.urls.survey')),
 ]
