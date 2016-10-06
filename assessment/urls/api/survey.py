@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
-from assessment.views import survey
+from assessment.views.api import survey
 
 
 urlpatterns = [

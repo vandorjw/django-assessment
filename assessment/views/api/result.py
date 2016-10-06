@@ -32,6 +32,24 @@ def retrieve_result(request, uuid):
         return Response(serializer.data)
 
 
+@api_view(['POST', ])
+def create_result(request):
+    """
+    """
+    if request.method == 'POST':
+        response_data = {"details": "not implemented"}
+        return Response(response_data, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT', ])
+def update_result(request, uuid):
+    """
+    """
+    if request.method == 'PUT':
+        response_data = {"details": "not implemented"}
+        return Response(response_data, status=status.HTTP_200_OK)
+
+
 @api_view(['GET', ])
 def list_results(request):
     """

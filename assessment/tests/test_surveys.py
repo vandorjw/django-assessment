@@ -8,20 +8,24 @@ from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from assessment.models import Survey
+from assessment.models import Profile
 
 
-class AccountTests(APITestCase):
+
+class SurveyTests(APITestCase):
 
     def setUp(self):
         self.admin = User.objects.create_superuser(
             username='admin', email='admin@example.com', password='top_secret')
+        Profile.objects.create(user=self.admin)
         self.client.login(username='admin', password='top_secret')
+        # self.client.options()
 
     def test_create_survey(self):
         """
         Ensure we can create a new survey object.
         """
-        url = reverse('assessment:surveys_create')
+        url = reverse('assessment:api:create_survey')
         data = {
             'name': 'Test Survey 1',
             'slug': 'test-survey-1',
@@ -33,3 +37,7 @@ class AccountTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Survey.objects.count(), 1)
         self.assertEqual(Survey.objects.get().name, 'Test Survey 1')
+
+    def test_getlist(self):
+        response = self.client.get(reverse('assessment:api:list_surveys'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

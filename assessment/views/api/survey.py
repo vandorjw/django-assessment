@@ -78,8 +78,8 @@ def list_surveys(request):
     """
     if request.method == 'GET':
         try:
-            profile = Profile.objects.get(username=request.user.username)
-        except User.DoesNotExist:
+            profile = Profile.objects.get(user=request.user)
+        except Profile.DoesNotExist:
             return Response({"error": "user not found"}, status=status.HTTP_404_NOT_FOUND)
 
         surveys = Survey.objects.filter(is_active=True)

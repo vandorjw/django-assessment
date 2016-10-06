@@ -1,4 +1,8 @@
 from rest_framework import serializers
+from parler_rest.serializers import (
+    TranslatableModelSerializer,
+    TranslatedFieldsField,
+)
 from assessment.models import (
     Survey,
     SurveyAdmin,
@@ -11,17 +15,16 @@ from assessment.models import (
 )
 
 
-class SurveySerializer(serializers.ModelSerializer):
+class SurveySerializer(TranslatableModelSerializer):
+    translations = TranslatedFieldsField(shared_model=Survey)
     class Meta:
         model = Survey
         fields = (
-            'name',
-            'slug',
             'is_active',
-            'description',
             'start_date_time',
             'end_date_time',
             'owner',
+            'translations',
 
 )
 
@@ -55,23 +58,27 @@ class ProfileSerializer(serializers.ModelSerializer):
         )
 
 
-class QuestionSerializer(serializers.ModelSerializer):
+class QuestionSerializer(TranslatableModelSerializer):
+    translations = TranslatedFieldsField(shared_model=Question)
+
     class Meta:
         model = Question
         fields = (
             'survey',
-            'question',
             'of_type',
+            'translations',
         )
 
 
-class ChoiceSerializer(serializers.ModelSerializer):
+class ChoiceSerializer(TranslatableModelSerializer):
+    translations = TranslatedFieldsField(shared_model=Choice)
+
     class Meta:
         model = Choice
         fields = (
             'question',
-            'choice_value',
             'is_correct',
+            'translations',
         )
 
 
