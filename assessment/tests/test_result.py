@@ -22,6 +22,6 @@ class ResultTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_getlist_authenticated(self):
-        print(self.client.login(username='bob', password='top_secret'))
+        self.client.login(username='bob', password='top_secret')
         response = self.client.get(reverse('assessment:api:list_results'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
