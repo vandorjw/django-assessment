@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 try:
     from django.contrib.auth import get_user_model
@@ -11,7 +12,6 @@ from assessment.models import Survey
 from assessment.models import Profile
 
 
-
 class SurveyTests(APITestCase):
 
     def setUp(self):
@@ -19,7 +19,6 @@ class SurveyTests(APITestCase):
             username='admin', email='admin@example.com', password='top_secret')
         Profile.objects.create(user=self.admin)
         self.client.login(username='admin', password='top_secret')
-        # self.client.options()
 
     def test_create_survey(self):
         """
