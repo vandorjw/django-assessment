@@ -53,20 +53,15 @@ def update_result(request, uuid):
 @api_view(['GET', ])
 def list_results(request):
     """
+    Generate a list of all survey results for the authenticated user.
+    If there is no authenticated user, return 401 UNAUTHORIZED.
     """
     if request.method == 'GET':
-        if request.user.is_staff:
-            results = Result.objects.all()
-            serializer = ResultSerializer(results, many=True)
-            return Response(serializer.data)
-        else:
-            try:
-                user = User.objects.get(username=request.user.username)
-            except User.DoesNotExist:
-                return Response({"error": "user not found"}, status.HTTP_404_NOT_FOUND)
-            results = Result.objects.filter(user=user)
+        if request.user.is_authenticated():
+            results = Result.objects.filter(user=request.user)
             serializer = ResultSerializer(results, many=True)
             return Response(serializer.data, status.HTTP_200_OK)
+        return Response({"details": "unauthorized"}, status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['GET', ])
@@ -75,31 +70,20 @@ def filter_results(request):
 
     """
     if request.method == 'GET':
-        filters = []
-        survey = request.GET.get('survey', None)
-        username = request.GET.get('username', None)
+        if request.user.is_authenticated():
+            filters = [Q(user=request.user)]
+            survey = request.GET.get('survey', None)
 
-        if request.user.is_staff or request.user.username == username:
-            pass
-        elif username is None:
-            username = request.user.username
+            if survey:
+                try:
+                    survey = Survey.objects.get(slug=survey)
+                except Survey.DoesNotExist:
+                    return Response({"error": "survey not found"}, status.HTTP_404_NOT_FOUND)
+                else:
+                    filters.append(Q(survey=survey))
+
+            results_by_filters = Result.objects.filter(*filters)
+            serializer = ResultSerializer(results_by_filters, many=True)
+            return Response(serializer.data, status.HTTP_200_OK)
         else:
-            return Response({"error": "un-authorized"}, status.HTTP_401_UNAUTHORIZED)
-
-        if username:
-            try:
-                user = User.objects.get(username=username)
-            except User.DoesNotExist:
-                return Response({"error": "user not found"}, status.HTTP_404_NOT_FOUND)
-            filters.append(Q(user=user))
-
-        if survey:
-            try:
-                survey = Survey.objects.get(slug=survey)
-            except Survey.DoesNotExist:
-                return Response({"error": "survey not found"}, status.HTTP_404_NOT_FOUND)
-            filters.append(Q(survey=survey))
-
-        results_by_filters = Result.objects.filter(*filters)
-        serializer = ResultSerializer(results_by_filters, many=True)
-        return Response(serializer.data, status.HTTP_200_OK)
+            return Response({"details": "unauthorized"}, status.HTTP_401_UNAUTHORIZED)
