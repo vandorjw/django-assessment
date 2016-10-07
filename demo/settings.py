@@ -13,22 +13,12 @@ DATABASES = {
     }
 }
 
-TIME_ZONE = 'America/Toronto'
+TIME_ZONE = 'UTC'
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 SECRET_KEY = str(uuid.uuid4())
-
-USE_TZ = False
-USE_I18N = False
-USE_L10N = False
-
-LANGUAGE_CODE = 'en'
-
-LANGUAGES = (
-    ('en', gettext('English')),
-)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -43,7 +33,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'demo.urls'
 
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.staticfiles',
     'rest_framework',
+    'parler',
     'assessment'
 )
 
@@ -73,3 +63,34 @@ TEMPLATES = [
     },
 ]
 
+
+USE_TZ = True
+USE_I18N = True
+USE_L10N = True
+
+LANGUAGE_CODE = 'en'
+
+
+LANGUAGES = [
+    ('de', gettext('German')),
+    ('en', gettext('English')),
+    ('fr', gettext('French')),
+    ('nl', gettext('Nederlands')),
+]
+
+# ------------------------------------------------------------------------------
+# TRANSLATION Configuration
+# ------------------------------------------------------------------------------
+PARLER_DEFAULT_LANGUAGE_CODE = LANGUAGE_CODE
+PARLER_LANGUAGES = {
+    None: (
+        {'code': 'de',},
+        {'code': 'en',},
+        {'code': 'fr',},
+        {'code': 'nl',},
+    ),
+    'default': {
+        'fallbacks': [LANGUAGE_CODE],
+        'hide_untranslated': False,
+    }
+}

@@ -38,5 +38,7 @@ setup(
         'djangorestframework==3.4.7',
         'Markdown==2.6.7',
         'django-filter==0.15.0',
+        'django_parler==1.6.5',
+        'django-parler-rest==1.4.2',
     ],
 )

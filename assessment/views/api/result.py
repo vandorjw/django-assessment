@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 try:
     from django.contrib.auth import get_user_model
     User = get_user_model()
@@ -13,7 +14,7 @@ from assessment.models import Survey
 
 
 @api_view(['GET', ])
-def retrieve_results(request, uuid):
+def retrieve_result(request, uuid):
     """
     """
     if request.method == 'GET':
@@ -29,6 +30,24 @@ def retrieve_results(request, uuid):
 
         serializer = ResultSerializer(result)
         return Response(serializer.data)
+
+
+@api_view(['POST', ])
+def create_result(request):
+    """
+    """
+    if request.method == 'POST':
+        response_data = {"details": "not implemented"}
+        return Response(response_data, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT', ])
+def update_result(request, uuid):
+    """
+    """
+    if request.method == 'PUT':
+        response_data = {"details": "not implemented"}
+        return Response(response_data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET', ])

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 try:
     from django.contrib.auth import get_user_model
     User = get_user_model()
@@ -8,10 +9,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from assessment.serializers import SurveySerializer
 from assessment.models import Survey
+from assessment.models import Profile
 
 
 @api_view(['POST', ])
-def create_surveys(request):
+def create_survey(request):
     if request.method == 'POST':
         try:
             user = User.objects.get(username=request.user.username)
@@ -26,7 +28,7 @@ def create_surveys(request):
 
 
 @api_view(['PUT', ])
-def update_surveys(request, slug):
+def update_survey(request, slug):
     """
     """
     if request.method == 'PUT':
@@ -51,7 +53,7 @@ def update_surveys(request, slug):
 
 
 @api_view(['GET', ])
-def retrieve_surveys(request, slug):
+def retrieve_survey(request, slug):
     """
     """
     if request.method == 'GET':
@@ -67,8 +69,19 @@ def retrieve_surveys(request, slug):
 @api_view(['GET', ])
 def list_surveys(request):
     """
+    return available surveys, via assigned and assigned groups.
+    Mark surveys as:
+        completed
+        in progress
+        available
+        expired
     """
     if request.method == 'GET':
+        try:
+            profile = Profile.objects.get(user=request.user)
+        except Profile.DoesNotExist:
+            return Response({"error": "user not found"}, status=status.HTTP_404_NOT_FOUND)
+
         surveys = Survey.objects.filter(is_active=True)
         serializer = SurveySerializer(surveys, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
