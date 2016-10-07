@@ -6,10 +6,11 @@ python:
 cache: false
 
 install:
-  - pip install -e .
+  - pip install coveralls
+  - pip install -e . --use-mirrors
 
 script:
-  - django-admin test
+  - coverage run `which django-admin.py` test
 
 notifications:
   email: false
@@ -18,3 +19,6 @@ branches:
   only:
     - master
     - development
+
+after_success:
+  coveralls
