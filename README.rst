@@ -5,7 +5,7 @@ Django-Assessment
 .. image:: https://travis-ci.org/vandorjw/django-assessment.svg?branch=master
     :target: https://travis-ci.org/vandorjw/django-assessment
 .. image:: https://coveralls.io/repos/github/vandorjw/django-assessment/badge.svg?branch=master
-    :target: ttps://coveralls.io/github/vandorjw/django-assessment?branch=master
+    :target: https://coveralls.io/github/vandorjw/django-assessment?branch=master
 
 Simple appllication for managing a survey/quiz within your Django Web Site.
 
