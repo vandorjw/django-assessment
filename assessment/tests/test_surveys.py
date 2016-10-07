@@ -27,16 +27,30 @@ class SurveyTests(APITestCase):
         """
         url = reverse('assessment:api:create_survey')
         data = {
-            'name': 'Test Survey 1',
-            'slug': 'test-survey-1',
+            "translations": {
+                "de": {
+                    "name": "Hallo Welt",
+                    "slug": "hallo-welt",
+                    "description": "Wie sage ich; 'Hello World', auf Deutsch?",
+                },
+                "en": {
+                    "name": "Hello World",
+                    "slug": "hello-world",
+                    "description": "How do I say; 'Hello world', in English?",
+                },
+                "nl": {
+                    "name": "Hallo Wereld",
+                    "slug": "hallo-wereld",
+                    "description": "Hoe zeg ik; 'Hello World', in Nederlandse?",
+                }
+            },
             'is_active': True,
-            'description': 'Test description',
             'start_date_time': datetime.datetime.now(),
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Survey.objects.count(), 1)
-        self.assertEqual(Survey.objects.get().name, 'Test Survey 1')
+        self.assertEqual(Survey.objects.get().name, 'Hello World')
 
     def test_getlist(self):
         response = self.client.get(reverse('assessment:api:list_surveys'))
