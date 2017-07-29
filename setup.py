@@ -8,7 +8,7 @@ from setuptools import find_packages
 import assessment
 
 setup(
-    name='assessment',
+    name='django-assessment',
     version=assessment.__version__,
 
     description='Django Assessment package',
@@ -19,26 +19,36 @@ setup(
     author_email=assessment.__email__,
     url=assessment.__url__,
 
-    packages=find_packages(exclude=['docs']),
+    packages=find_packages(exclude=('docs*', 'tests*')),
     classifiers=[
         'Framework :: Django',
         'Development Status :: 1 - Planning',
         'Environment :: Web Environment',
+        'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
-        'License :: Non-Free',
+        'License :: OSI Approved :: BSD License',,
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     license=assessment.__license__,
     include_package_data=True,
     zip_safe=False,
-    install_requires=[
-        'django==1.10.1',
-        'djangorestframework==3.4.7',
-        'Markdown==2.6.7',
-        'django-filter==0.15.0',
-        'django_parler==1.6.5',
-        'django-parler-rest==1.4.2',
+    requires = [
+        'Django (>=1.8)',
+        'djangorestframework (>=3.6)',
+        'Markdown (>=2.6)',
+        'django-filter (>=1.0)',
+        'django_parler (>=1.8)',
+        'django-parler-rest (>=1.4)',
+
+    ],
+    install_requires = [
+        'Django>=1.8',
+        'djangorestframework>=3.4',
+        'Markdown>=2.6',
+        'django-filter>=1.0',
+        'django_parler>=1.8',
+        'django-parler-rest>=1.4',
     ],
 )
