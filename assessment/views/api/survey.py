@@ -5,6 +5,7 @@ try:
     User = get_user_model()
 except ImportError:
     from django.contrib.auth.models import User
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -17,25 +18,20 @@ logger = logging.getLogger(__name__)
 @api_view(['POST', ])
 def create_survey(request):
     if request.user.is_authenticated:
-        return Response({"error": "user not found"}, status.HTTP_404_NOT_FOUND)
-    else:
         serializer = SurveySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({"error": "user not found"}, status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['PUT', ])
 def update_survey(request, slug):
     """
     """
-    if request.method == 'PUT':
-        try:
-            user = User.objects.get(username=request.user.username)
-        except User.DoesNotExist:
-            return Response({"error": "user not found"}, status=status.HTTP_404_NOT_FOUND)
-
+    if request.user.is_authenticated:
         try:
             survey = Survey.objects.get(slug=slug)
         except Survey.DoesNotExist:
@@ -49,6 +45,8 @@ def update_survey(request, slug):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"error": "un-authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return Response({"error": "user not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET', ])
@@ -71,9 +69,9 @@ def list_surveys(request):
     return a list of surveys.
     """
     if request.user.is_authenticated:
-        public_surveys = Survey.objects.filter(is_private=False)
-        private_surveys = request.user.assessment_surveys.filter(is_private=True)
-        surveys = public_surveys + private_surveys
+        public_surveys = Q(is_private=False)
+        private_surveys = Q(is_private=True, pk__in=request.user.assessment_user_surveys.all())
+        surveys = Survey.objects.filter(public_surveys | private_surveys)
     else:
         surveys = Survey.objects.filter(is_private=False)
     serializer = SurveySerializer(surveys, many=True)

@@ -9,7 +9,6 @@ from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from assessment.models import Survey
-from assessment.models import Profile
 
 
 class SurveyTests(APITestCase):
@@ -17,7 +16,6 @@ class SurveyTests(APITestCase):
     def setUp(self):
         self.admin = User.objects.create_superuser(
             username='admin', email='admin@example.com', password='top_secret')
-        Profile.objects.create(user=self.admin)
         self.client.login(username='admin', password='top_secret')
 
     def test_create_survey(self):
@@ -43,8 +41,8 @@ class SurveyTests(APITestCase):
                     "description": "Hoe zeg ik; 'Hello World', in Nederlandse?",
                 }
             },
-            'is_active': True,
-            'start_date_time': datetime.datetime.now(),
+            "is_active": True,
+            "start_date_time": datetime.datetime.now(),
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
