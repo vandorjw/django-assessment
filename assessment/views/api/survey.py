@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import logging
 try:
     from django.contrib.auth import get_user_model
     User = get_user_model()
@@ -12,15 +11,13 @@ from rest_framework.response import Response
 from assessment.serializers import SurveySerializer
 from assessment.models import Survey
 
-logger = logging.getLogger(__name__)
-
 
 @api_view(['POST', ])
 def create_survey(request):
     if request.user.is_authenticated:
         serializer = SurveySerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(admin=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
@@ -37,7 +34,7 @@ def update_survey(request, slug):
         except Survey.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if user.is_staff or user is survey.owner or user in [sa.admin for sa in survey.surveyadmin_set.all()]:
+        if user is survey.admin:
             serializer = SurveySerializer(survey, data=request.data)
             if serializer.is_valid():
                 serializer.save()
@@ -52,6 +49,7 @@ def update_survey(request, slug):
 @api_view(['GET', ])
 def retrieve_survey(request, slug):
     """
+    return a single survey.
     """
     if request.method == 'GET':
         try:
@@ -71,7 +69,8 @@ def list_surveys(request):
     if request.user.is_authenticated:
         public_surveys = Q(is_private=False)
         private_surveys = Q(is_private=True, pk__in=request.user.assessment_user_surveys.all())
-        surveys = Survey.objects.filter(public_surveys | private_surveys)
+        admin_surveys = Q(admin=request.user)
+        surveys = Survey.objects.filter(public_surveys | private_surveys | admin_surveys)
     else:
         surveys = Survey.objects.filter(is_private=False)
     serializer = SurveySerializer(surveys, many=True)

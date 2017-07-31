@@ -24,8 +24,7 @@ class SurveySerializer(TranslatableModelSerializer):
             'admin',
             'users',
             'translations',
-
-)
+        )
 
 
 class QuestionSerializer(TranslatableModelSerializer):
