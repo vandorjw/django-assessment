@@ -1,6 +1,5 @@
 """Urls for the demo of django-assessment"""
 from django.conf import settings
-from django.contrib import admin
 from django.conf.urls import url
 from django.conf.urls import include
 
@@ -10,11 +9,12 @@ from django.views.defaults import server_error
 from django.views.defaults import page_not_found
 from django.views.defaults import permission_denied
 
+from rest_framework.authtoken import views as authtoken_views
+
 
 urlpatterns = [
     url(r'^', include('assessment.urls', namespace='assessment')),
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', admin.site.urls),
+    url(r'^api-token-auth/', authtoken_views.obtain_auth_token),
 ]
 
 urlpatterns += [

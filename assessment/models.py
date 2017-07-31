@@ -45,12 +45,18 @@ class Survey(TranslatableModel):
         blank=True,
     )
 
-    owner = models.ForeignKey(
+    admin = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
-        related_name="assessment_surveys",
+        related_name="assessment_admin_surveys",
         verbose_name=_('owner'),
+    )
+
+    users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="assessment_user_surveys",
+        blank=True,
     )
 
     class Meta:
@@ -60,115 +66,6 @@ class Survey(TranslatableModel):
 
     def __str__(self):
         return self.name
-
-
-class SurveyAdmin(models.Model):
-
-    _uid = models.UUIDField(
-        primary_key=True,
-        editable=False,
-        default=uuid.uuid4,
-    )
-
-    admin = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        verbose_name=_("admin"),
-    )
-
-    survey = models.ForeignKey(
-        Survey,
-        verbose_name=_("survey"),
-    )
-
-    class Meta:
-        app_label = 'assessment'
-        verbose_name = _("survey admin")
-        verbose_name_plural = _("survey admins")
-
-    def __str__(self):
-        try:
-            return self.admin.username
-        except Exception:
-            return str(self.pk)
-
-
-class SurveyGroup(models.Model):
-
-    _uid = models.UUIDField(
-        primary_key=True,
-        editable=False,
-        default=uuid.uuid4,
-    )
-
-    name = models.CharField(
-        _("group name"),
-        max_length=160,
-    )
-
-    surveys = models.ManyToManyField(
-        Survey,
-        blank=True,
-        related_name='survey_groups',
-        verbose_name=_("surveys"),
-    )
-
-    is_active = models.BooleanField(
-        _("active"),
-        default=True,
-    )
-
-    is_private = models.BooleanField(
-        _("private"),
-        default=False,
-    )
-
-    class Meta:
-        app_label = 'assessment'
-        verbose_name = _("survey group")
-        verbose_name_plural = _("survey groups")
-
-    def __str__(self):
-        return self.name
-
-
-class Profile(models.Model):
-
-    _uid = models.UUIDField(
-        primary_key=True,
-        editable=False,
-        default=uuid.uuid4,
-    )
-
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        related_name="assessment_profile",
-        verbose_name=_("user"),
-    )
-
-    surveys = models.ManyToManyField(
-        Survey,
-        blank=True,
-        related_name='surveys',
-        verbose_name=_("surveys"),
-    )
-
-    survey_groups = models.ManyToManyField(
-        SurveyGroup,
-        blank=True,
-        related_name='survey_groups',
-        verbose_name=_("survey groups"),
-    )
-
-    class Meta:
-        app_label = 'assessment'
-        verbose_name = _("profile")
-        verbose_name_plural = _("profiles")
-
-    def __str__(self):
-        try:
-            return self.user.get_full_name()
-        except Exception:
-            return str(self.pk)
 
 
 class Question(TranslatableModel):
@@ -196,6 +93,11 @@ class Question(TranslatableModel):
     survey = models.ForeignKey(
         Survey,
         verbose_name=_("survey")
+    )
+
+    is_required = models.BooleanField(
+        _("required"),
+        default=False,
     )
 
     of_type = models.IntegerField(

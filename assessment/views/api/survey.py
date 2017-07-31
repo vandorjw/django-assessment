@@ -10,19 +10,15 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from assessment.serializers import SurveySerializer
 from assessment.models import Survey
-from assessment.models import Profile
 
 logger = logging.getLogger(__name__)
 
 
 @api_view(['POST', ])
 def create_survey(request):
-    if request.method == 'POST':
-        try:
-            user = User.objects.get(username=request.user.username)
-        except User.DoesNotExist:
-            return Response({"error": "user not found"}, status.HTTP_404_NOT_FOUND)
-
+    if request.user.is_authenticated:
+        return Response({"error": "user not found"}, status.HTTP_404_NOT_FOUND)
+    else:
         serializer = SurveySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -72,23 +68,12 @@ def retrieve_survey(request, slug):
 @api_view(['GET', ])
 def list_surveys(request):
     """
-    return available surveys, via assigned and assigned groups.
-    Mark surveys as:
-        completed
-        in progress
-        available
-        expired
+    return a list of surveys.
     """
-    try:
-        profile = Profile.objects.get(user=request.user)
-    except (Profile.DoesNotExist, Exception) as error:
-        profile = None
-        logger.error(error)
-    if profile:
-        private_surveys = profile.surveys.all()
-        private_group_surveys = profile.survey_groups.filter()
+    if request.user.is_authenticated:
         public_surveys = Survey.objects.filter(is_private=False)
-        surveys = private_surveys + private_group_surveys + public_surveys
+        private_surveys = request.user.assessment_surveys.filter(is_private=True)
+        surveys = public_surveys + private_surveys
     else:
         surveys = Survey.objects.filter(is_private=False)
     serializer = SurveySerializer(surveys, many=True)
