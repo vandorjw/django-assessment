@@ -21,6 +21,7 @@ class SurveySerializer(TranslatableModelSerializer):
         model = Survey
         fields = (
             'is_active',
+            'is_private',
             'start_date_time',
             'end_date_time',
             'owner',
@@ -45,6 +46,7 @@ class SurveyGroupSerializer(serializers.ModelSerializer):
             'name',
             'surveys',
             'is_active',
+            'is_private',
         )
 
 

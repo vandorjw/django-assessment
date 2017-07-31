@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'parler',
     'assessment'
 )

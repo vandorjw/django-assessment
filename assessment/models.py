@@ -27,6 +27,11 @@ class Survey(TranslatableModel):
         default=True,
     )
 
+    is_private = models.BooleanField(
+        _("private"),
+        default=False,
+    )
+
     start_date_time = models.DateTimeField(
         _("start time"),
         auto_now=False,
@@ -110,6 +115,11 @@ class SurveyGroup(models.Model):
     is_active = models.BooleanField(
         _("active"),
         default=True,
+    )
+
+    is_private = models.BooleanField(
+        _("private"),
+        default=False,
     )
 
     class Meta:
