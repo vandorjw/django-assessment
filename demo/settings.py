@@ -48,7 +48,6 @@ INSTALLED_APPS = (
     'assessment'
 )
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -64,7 +63,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 USE_TZ = True
 USE_I18N = True

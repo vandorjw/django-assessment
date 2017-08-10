@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import uuid
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.conf import settings
 from parler.models import TranslatableModel
@@ -162,14 +163,12 @@ class Result(models.Model):
 
     survey = models.ForeignKey(
         Survey,
-        editable=False,
         related_name='results',
         verbose_name=_("survey"),
     )
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        editable=False,
         related_name='results',
         verbose_name=_("user"),
     )
@@ -183,6 +182,15 @@ class Result(models.Model):
     def __str__(self):
         return str(self.pk)
 
+    def save(self, *args, **kwargs):
+        if self.survey.is_private:
+            if self.user == self.survey.admin or self.user in self.survey.users.all():
+                super(Result, self).save(*args, **kwargs)
+            else:
+                raise ValidationError("User attempted to answer private survey!")
+        else:
+            super(Result, self).save(*args, **kwargs)
+
 
 class Answer(models.Model):
 
@@ -194,14 +202,12 @@ class Answer(models.Model):
 
     result = models.ForeignKey(
         Result,
-        editable=False,
         related_name='answers',
         verbose_name=_("result"),
     )
 
     question = models.ForeignKey(
         Question,
-        editable=False,
         related_name='answers',
         verbose_name=_("question"),
     )

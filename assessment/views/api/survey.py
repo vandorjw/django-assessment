@@ -82,5 +82,5 @@ def list_surveys(request):
         surveys = Survey.objects.filter(public_surveys | private_surveys | admin_surveys)
     else:
         surveys = Survey.objects.filter(is_private=False)
-    serializer = SurveySerializer(surveys, many=True)
+    serializer = SurveySerializer(surveys, many=True, context={'request': request})
     return Response(serializer.data, status=status.HTTP_200_OK)

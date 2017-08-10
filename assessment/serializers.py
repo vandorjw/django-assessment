@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 from parler_rest.serializers import (
     TranslatableModelSerializer,
     TranslatedFieldsField,
@@ -73,7 +75,6 @@ class ResultSerializer(serializers.ModelSerializer):
             '_uid',
             'survey',
             'user',
-            'completed_on',
         )
 
 
