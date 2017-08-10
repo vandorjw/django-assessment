@@ -1,4 +1,3 @@
-"""Settings for Silent Auction Demo"""
 import os
 import uuid
 
@@ -22,6 +21,7 @@ SECRET_KEY = str(uuid.uuid4())
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'parler',
     'assessment'
 )
@@ -94,3 +95,10 @@ PARLER_LANGUAGES = {
         'hide_untranslated': False,
     }
 }
+
+
+
+CORS_URLS_REGEX = r'^/api/.*$'
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000',
+)
