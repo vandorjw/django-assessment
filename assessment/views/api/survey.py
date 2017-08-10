@@ -25,7 +25,7 @@ def create_survey(request):
 
 
 @api_view(['PUT', ])
-def update_survey(request, slug):
+def update_survey(request, uuid):
     """
     """
     if request.user.is_authenticated:
@@ -47,17 +47,26 @@ def update_survey(request, slug):
 
 
 @api_view(['GET', ])
-def retrieve_survey(request, slug):
+def retrieve_survey(request, uuid):
     """
     return a single survey.
     """
-    if request.method == 'GET':
-        try:
-            result = Survey.objects.get(slug=slug)
-        except Survey.DoesNotExist:
-            return Response({"error": "Survey not found"}, status=status.HTTP_404_NOT_FOUND)
+    try:
+        result = Survey.objects.get(pk=uuid)
+    except (Survey.DoesNotExist, ValueError):
+        return Response({"error": "Survey not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = SurveySerializer(result)
+    if result.is_private:
+        if request.user.is_authenticated:
+            if request.user == result.admin or request.user in result.users.all():
+                serializer = SurveySerializer(result, context={'request': request})
+                return Response(serializer.data)
+            else:
+                return Response({"error": "This is a private survey."}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            return Response({"error": "Please login."}, status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        serializer = SurveySerializer(result, context={'request': request})
         return Response(serializer.data)
 
 

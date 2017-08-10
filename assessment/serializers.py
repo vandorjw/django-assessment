@@ -13,10 +13,19 @@ from assessment.models import (
 
 
 class SurveySerializer(TranslatableModelSerializer):
+    _uid = serializers.UUIDField(label='ID', read_only=True)
     translations = TranslatedFieldsField(shared_model=Survey)
+    question_set = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='assessment:api:retrieve_question',
+        lookup_field='pk',
+        lookup_url_kwarg='uuid',
+    )
     class Meta:
         model = Survey
         fields = (
+            '_uid',
             'is_active',
             'is_private',
             'start_date_time',
@@ -24,15 +33,18 @@ class SurveySerializer(TranslatableModelSerializer):
             'admin',
             'users',
             'translations',
+            'question_set',
         )
 
 
 class QuestionSerializer(TranslatableModelSerializer):
+    _uid = serializers.UUIDField(label='ID', read_only=True)
     translations = TranslatedFieldsField(shared_model=Question)
 
     class Meta:
         model = Question
         fields = (
+            '_uid',
             'survey',
             'of_type',
             'translations',
@@ -40,11 +52,13 @@ class QuestionSerializer(TranslatableModelSerializer):
 
 
 class ChoiceSerializer(TranslatableModelSerializer):
+    _uid = serializers.UUIDField(label='ID', read_only=True)
     translations = TranslatedFieldsField(shared_model=Choice)
 
     class Meta:
         model = Choice
         fields = (
+            '_uid',
             'question',
             'is_correct',
             'translations',
@@ -52,9 +66,11 @@ class ChoiceSerializer(TranslatableModelSerializer):
 
 
 class ResultSerializer(serializers.ModelSerializer):
+    _uid = serializers.UUIDField(label='ID', read_only=True)
     class Meta:
         model = Result
         fields = (
+            '_uid',
             'survey',
             'user',
             'completed_on',
@@ -62,9 +78,11 @@ class ResultSerializer(serializers.ModelSerializer):
 
 
 class AnswerSerializer(serializers.ModelSerializer):
+    _uid = serializers.UUIDField(label='ID', read_only=True)
     class Meta:
         model = Answer
         fields = (
+            '_uid',
             'result',
             'question',
             'answer',
