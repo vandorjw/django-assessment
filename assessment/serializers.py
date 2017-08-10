@@ -5,9 +5,6 @@ from parler_rest.serializers import (
 )
 from assessment.models import (
     Survey,
-    SurveyAdmin,
-    SurveyGroup,
-    Profile,
     Question,
     Choice,
     Result,
@@ -21,40 +18,12 @@ class SurveySerializer(TranslatableModelSerializer):
         model = Survey
         fields = (
             'is_active',
+            'is_private',
             'start_date_time',
             'end_date_time',
-            'owner',
-            'translations',
-
-)
-
-
-class SurveyAdminSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SurveyAdmin
-        fields = (
             'admin',
-            'survey',
-        )
-
-
-class SurveyGroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SurveyGroup
-        fields = (
-            'name',
-            'surveys',
-            'is_active',
-        )
-
-
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = (
-            'user',
-            'surveys',
-            'survey_groups',
+            'users',
+            'translations',
         )
 
 

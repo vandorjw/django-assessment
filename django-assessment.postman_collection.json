@@ -1,0 +1,109 @@
+{
+	"variables": [],
+	"info": {
+		"name": "django-assessment",
+		"_postman_id": "d01bad29-18ea-b4a7-7a29-30cea57b0003",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get-survey-list anonymous",
+			"request": {
+				"url": "http://{{domain}}/api/survey/",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get-auth-token",
+			"request": {
+				"url": "http://{{domain}}/api-token-auth/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"password\": \"admin\",\n  \"username\": \"admin\"\n}"
+				},
+				"description": "Get the AuthToken"
+			},
+			"response": []
+		},
+		{
+			"name": "get-survey-list authenticated",
+			"request": {
+				"url": "http://{{domain}}/api/survey/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 80f1229015b30c170211c665b52aa962f8bc9c33",
+						"description": "Get token value from 'get-auth-token'"
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "create-survey private",
+			"request": {
+				"url": "http://{{domain}}/api/survey/create/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 80f1229015b30c170211c665b52aa962f8bc9c33",
+						"description": "Get token value from 'get-auth-token'"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n            \"translations\": {\n                \"de\": {\n                    \"name\": \"private Hallo Welt\",\n                    \"slug\": \"private-hallo-welt\",\n                    \"description\": \"Wie sage ich; 'Hello World', auf Deutsch?\"\n                },\n                \"en\": {\n                    \"name\": \"private Hello World\",\n                    \"slug\": \"private-hello-world\",\n                    \"description\": \"How do I say; 'Hello world', in English?\"\n                },\n                \"nl\": {\n                    \"name\": \"private Hallo Wereld\",\n                    \"slug\": \"private-hallo-wereld\",\n                    \"description\": \"Hoe zeg ik; 'Hello World', in Nederlandse?\"\n                }\n            },\n            \"is_active\": true,\n            \"is_private\": true,\n            \"start_date_time\": \"2017-07-31T05:09:38.460803Z\"\n        }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "create-survey public",
+			"request": {
+				"url": "http://{{domain}}/api/survey/create/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 80f1229015b30c170211c665b52aa962f8bc9c33",
+						"description": "Get token value from 'get-auth-token'"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n            \"translations\": {\n                \"de\": {\n                    \"name\": \"Hallo Welt\",\n                    \"slug\": \"hallo-welt\",\n                    \"description\": \"Wie sage ich; 'Hello World', auf Deutsch?\"\n                },\n                \"en\": {\n                    \"name\": \"Hello World\",\n                    \"slug\": \"hello-world\",\n                    \"description\": \"How do I say; 'Hello world', in English?\"\n                },\n                \"nl\": {\n                    \"name\": \"Hallo Wereld\",\n                    \"slug\": \"hallo-wereld\",\n                    \"description\": \"Hoe zeg ik; 'Hello World', in Nederlandse?\"\n                }\n            },\n            \"is_active\": true,\n            \"start_date_time\": \"2017-07-31T05:09:38.460803Z\"\n        }"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
