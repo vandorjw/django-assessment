@@ -9,8 +9,16 @@ install:
   - pip install coveralls
   - pip install -e .
 
+addons:
+  sonarqube:
+    token:
+      secure: $SONAR_TOKEN
+  branches:
+    - master
+
 script:
   - coverage run `which django-admin.py` test
+  - sonar-scanner
 
 notifications:
   email: false
