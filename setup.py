@@ -41,5 +41,6 @@ setup(
         "django-filter>=1.0",
         "django_parler>=1.8",
         "django-parler-rest>=1.4",
+        "django-cors-headers>=2.0",
     ],
 )
