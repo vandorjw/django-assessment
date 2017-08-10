@@ -46,6 +46,7 @@ def retrieve_question(request, uuid):
 @api_view(['POST', ])
 def create_question(request):
     """
+    create a question for a survey
     """
     if request.user.is_authenticated:
         serializer = QuestionSerializer(data=request.data)
