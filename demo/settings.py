@@ -97,14 +97,11 @@ PARLER_LANGUAGES = {
     }
 }
 
-<<<<<<< HEAD
-
-
 CORS_URLS_REGEX = r'^/api/.*$'
 CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
 )
-=======
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
@@ -112,4 +109,3 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     )
 }
->>>>>>> 7902c65267e66798faf4a76f9998569babf4af7e
