@@ -13,12 +13,10 @@ addons:
   sonarqube:
     token:
       secure: $SONAR_TOKEN
-  branches:
-    - master
 
 script:
   - coverage run `which django-admin.py` test
-  - sonarcloud
+  - sonar-scanner
 
 notifications:
   email: false
