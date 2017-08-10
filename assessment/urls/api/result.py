@@ -20,11 +20,6 @@ urlpatterns = [
         name='update_result',
     ),
     url(
-        regex=r'^filter/$',
-        view=result.filter_results,
-        name='filter_results',
-    ),
-    url(
         regex=r'^(?P<uuid>[-\w]+)/$',
         view=result.retrieve_result,
         name='retrieve_result',
