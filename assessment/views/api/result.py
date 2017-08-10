@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import logging
 try:
     from django.contrib.auth import get_user_model
     User = get_user_model()
@@ -38,9 +37,8 @@ def create_result(request):
     if request.user.is_authenticated:
         request.data['user'] = request.user.pk
         serializer = ResultSerializer(data=request.data)
-        print(request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user)
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
