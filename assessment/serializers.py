@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from rest_framework import serializers
 from parler_rest.serializers import (
     TranslatableModelSerializer,
@@ -73,7 +74,6 @@ class ResultSerializer(serializers.ModelSerializer):
             '_uid',
             'survey',
             'user',
-            'completed_on',
         )
 
 
