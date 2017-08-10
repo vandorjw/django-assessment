@@ -14,6 +14,8 @@ addons:
     organization: "vandorjw-github"
     token:
       secure: $SONAR_TOKEN
+    github_token:
+      secure: $GITHUB_TOKEN
 
 script:
   - coverage run `which django-admin.py` test
