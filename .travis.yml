@@ -10,7 +10,8 @@ install:
   - pip install -e .
 
 addons:
-  sonarqube:
+  sonarcloud:
+    organization: "vandorjw-github"
     token:
       secure: $SONAR_TOKEN
 
