@@ -16,7 +16,7 @@ from assessment.models import (
 class SurveySerializer(TranslatableModelSerializer):
     _uid = serializers.UUIDField(label='ID', read_only=True)
     translations = TranslatedFieldsField(shared_model=Survey)
-    question_set = serializers.HyperlinkedRelatedField(
+    questions = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
         view_name='assessment:api:retrieve_question',
@@ -34,7 +34,7 @@ class SurveySerializer(TranslatableModelSerializer):
             'admin',
             'users',
             'translations',
-            'question_set',
+            'questions',
         )
 
 
@@ -80,6 +80,7 @@ class ResultSerializer(serializers.ModelSerializer):
         instance.clean()
         return attrs
 
+
 class AnswerSerializer(serializers.ModelSerializer):
     _uid = serializers.UUIDField(label='ID', read_only=True)
     class Meta:
@@ -90,3 +91,18 @@ class AnswerSerializer(serializers.ModelSerializer):
             'question',
             'answer',
         )
+    def validate(self, attrs):
+        instance = Answer(**attrs)
+        instance.clean()
+        return attrs
+
+    def validate_result(self, result):
+        try:
+            user = self.context.get('request').user
+        except Exception:
+            raise serializers.ValidationError('Could not access request.user')
+
+        if not result.user == user:
+            raise serializers.ValidationError('result does not belong to current user!')
+        else:
+            return result

@@ -93,6 +93,7 @@ class Question(TranslatableModel):
 
     survey = models.ForeignKey(
         Survey,
+        related_name='questions',
         verbose_name=_("survey")
     )
 
@@ -224,3 +225,7 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.answer
+
+    def clean(self, *args, **kwargs):
+        if self.question not in self.result.survey.questions.all():
+            raise ValidationError("User attempted to answer a question not part of this survey!")
