@@ -75,7 +75,10 @@ class ResultSerializer(serializers.ModelSerializer):
             'survey',
             'user',
         )
-
+    def validate(self, attrs):
+        instance = Result(**attrs)
+        instance.clean()
+        return attrs
 
 class AnswerSerializer(serializers.ModelSerializer):
     _uid = serializers.UUIDField(label='ID', read_only=True)
