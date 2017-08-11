@@ -55,7 +55,7 @@ def create_question(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
-        return Response({"error": "user not found"}, status.HTTP_404_NOT_FOUND)
+        return Response({"error": "please login"}, status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['PUT', ])
