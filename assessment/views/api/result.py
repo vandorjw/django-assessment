@@ -15,18 +15,19 @@ from assessment.models import Survey
 
 @api_view(['GET', ])
 def retrieve_result(request, uuid):
-    try:
-        result = Result.objects.get(pk=uuid)
-    except Result.DoesNotExist:
-        return Response({"error": "result not found"}, status.HTTP_404_NOT_FOUND)
+    if request.user.is_authenticated:
+        try:
+            result = Result.objects.get(pk=uuid)
+        except Result.DoesNotExist:
+            return Response({"error": "result not found"}, status.HTTP_404_NOT_FOUND)
 
-    if request.user.is_staff or request.user == result.user:
-        pass
+        if request.user == result.user or request.user == result.survey.admin:
+            serializer = ResultSerializer(result)
+            return Response(serializer.data)
+        else:
+            return Response({"error": "un-authorized"}, status=status.HTTP_403_FORBIDDEN)
     else:
         return Response({"error": "please log in"}, status.HTTP_401_UNAUTHORIZED)
-
-    serializer = ResultSerializer(result)
-    return Response(serializer.data)
 
 
 @api_view(['POST', ])

@@ -34,14 +34,14 @@ def update_survey(request, uuid):
         except Survey.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if user is survey.admin:
+        if request.user == survey.admin:
             serializer = SurveySerializer(survey, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({"error": "un-authorized"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"error": "un-authorized"}, status=status.HTTP_403_FORBIDDEN)
     else:
         return Response({"error": "user not found"}, status=status.HTTP_404_NOT_FOUND)
 
