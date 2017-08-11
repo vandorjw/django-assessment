@@ -184,7 +184,11 @@ class Result(models.Model):
 
     def clean(self, *args, **kwargs):
         if self.survey.is_private:
-            if not (self.user == self.survey.admin or self.user in self.survey.users.all()):
+            if self.user == self.survey.admin or self.user in self.survey.users.all():
+                # The user is allowed to answer this survey.
+                # sonarqube complains about how this is structured...
+                pass
+            else:
                 raise ValidationError("User attempted to answer private survey!")
 
 
