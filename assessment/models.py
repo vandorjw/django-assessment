@@ -182,14 +182,10 @@ class Result(models.Model):
     def __str__(self):
         return str(self.pk)
 
-    def save(self, *args, **kwargs):
+    def clean(self, *args, **kwargs):
         if self.survey.is_private:
-            if self.user == self.survey.admin or self.user in self.survey.users.all():
-                super(Result, self).save(*args, **kwargs)
-            else:
+            if not (self.user == self.survey.admin or self.user in self.survey.users.all()):
                 raise ValidationError("User attempted to answer private survey!")
-        else:
-            super(Result, self).save(*args, **kwargs)
 
 
 class Answer(models.Model):
