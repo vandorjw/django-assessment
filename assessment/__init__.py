@@ -8,4 +8,4 @@ __url__ = 'https://github.com/vandorjw/django-assessment'
 
 __license__ = 'MIT'
 
-VERSION = __version__ # synonym
+VERSION = __version__  # synonym

@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    from django.contrib.auth.models import User
-from django.db.models import Q
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -22,7 +16,7 @@ def retrieve_question(request, uuid):
         response_data = {
             "error": {
                 "state": "not found",
-                "details": "Question object with ID {} could not be found.".format(item_uuid)
+                "details": "Question object with ID {} could not be found.".format(uuid)
             }
         }
         return Response(response_data, status=status.HTTP_404_NOT_FOUND)

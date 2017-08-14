@@ -23,6 +23,7 @@ class SurveySerializer(TranslatableModelSerializer):
         lookup_field='pk',
         lookup_url_kwarg='uuid',
     )
+
     class Meta:
         model = Survey
         fields = (
@@ -68,6 +69,7 @@ class ChoiceSerializer(TranslatableModelSerializer):
 
 class ResultSerializer(serializers.ModelSerializer):
     _uid = serializers.UUIDField(label='ID', read_only=True)
+
     class Meta:
         model = Result
         fields = (
@@ -75,6 +77,7 @@ class ResultSerializer(serializers.ModelSerializer):
             'survey',
             'user',
         )
+
     def validate(self, attrs):
         instance = Result(**attrs)
         instance.clean()
@@ -83,6 +86,7 @@ class ResultSerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     _uid = serializers.UUIDField(label='ID', read_only=True)
+
     class Meta:
         model = Answer
         fields = (
@@ -91,6 +95,7 @@ class AnswerSerializer(serializers.ModelSerializer):
             'question',
             'answer',
         )
+
     def validate(self, attrs):
         instance = Answer(**attrs)
         instance.clean()

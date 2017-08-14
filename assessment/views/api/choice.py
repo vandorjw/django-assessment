@@ -1,15 +1,9 @@
 # -*- coding: utf-8 -*-
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    from django.contrib.auth.models import User
-from django.db.models import Q
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from assessment.serializers import ChoiceSerializer
-from assessment.models import Choice
+# from assessment.serializers import ChoiceSerializer
+# from assessment.models import Choice
 
 
 @api_view(['GET', ])
