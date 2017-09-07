@@ -7,6 +7,7 @@ cache: false
 
 install:
   - pip install coveralls
+  - pip install twine
   - pip install -e .
 
 addons:

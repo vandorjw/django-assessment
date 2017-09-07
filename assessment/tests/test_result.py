@@ -12,11 +12,33 @@ from rest_framework.test import APITestCase
 class ResultTests(APITestCase):
 
     def setUp(self):
-        self.bob = User.objects.create_superuser(
-            username='bob', email='bob@example.com', password='top_secret')
+        try:
+            self.bob = User.objects.create_superuser(
+                username='bob',
+                email='bob@example.com',
+                password='top_secret'
+            )
+        except Exception:
+            self.bob = User.objects.get(username='bob')
+        try:
+            self.admin = User.objects.create_superuser(
+                username='admin',
+                email='admin@example.com',
+                password='top_secret'
+            )
+        except Exception:
+            self.admin = User.objects.get(username='admin')
         self.client.login(username='bob', password='top_secret')
 
+    def tearDown(self):
+        Survey.objects.all().delete()
+
     def test_getlist_unauthenticated(self):
+        self.client.logout()
+        response = self.client.get(reverse('assessment:api:list_results'))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_response_unauthenticated(self):
         self.client.logout()
         response = self.client.get(reverse('assessment:api:list_results'))
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
