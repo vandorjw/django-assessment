@@ -13,16 +13,31 @@ from assessment.models import (
 )
 
 
-class SurveySerializer(TranslatableModelSerializer):
+class QuestionSerializer(TranslatableModelSerializer):
     _uid = serializers.UUIDField(label='ID', read_only=True)
-    translations = TranslatedFieldsField(shared_model=Survey)
-    questions = serializers.HyperlinkedRelatedField(
-        many=True,
+    translations = TranslatedFieldsField(shared_model=Question)
+    url = serializers.HyperlinkedIdentityField(
         read_only=True,
         view_name='assessment:api:retrieve_question',
         lookup_field='pk',
         lookup_url_kwarg='uuid',
     )
+
+    class Meta:
+        model = Question
+        fields = (
+            '_uid',
+            'survey',
+            'of_type',
+            'translations',
+            'url',
+        )
+
+
+class SurveySerializer(TranslatableModelSerializer):
+    _uid = serializers.UUIDField(label='ID', read_only=True)
+    translations = TranslatedFieldsField(shared_model=Survey)
+    questions = QuestionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Survey
@@ -36,20 +51,6 @@ class SurveySerializer(TranslatableModelSerializer):
             'users',
             'translations',
             'questions',
-        )
-
-
-class QuestionSerializer(TranslatableModelSerializer):
-    _uid = serializers.UUIDField(label='ID', read_only=True)
-    translations = TranslatedFieldsField(shared_model=Question)
-
-    class Meta:
-        model = Question
-        fields = (
-            '_uid',
-            'survey',
-            'of_type',
-            'translations',
         )
 
 

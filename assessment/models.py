@@ -19,7 +19,6 @@ class Survey(TranslatableModel):
 
     translations = TranslatedFields(
         name=models.CharField(_("name"), max_length=160),
-        slug=models.SlugField(_("slug"), max_length=160, unique=True),
         description=models.TextField(_("description")),
     )
 
