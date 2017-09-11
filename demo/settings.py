@@ -15,6 +15,7 @@ DATABASES = {
 TIME_ZONE = 'UTC'
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 MEDIA_URL = '/media/'
 
 SECRET_KEY = str(uuid.uuid4())
