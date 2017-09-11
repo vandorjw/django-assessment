@@ -21,7 +21,7 @@ Installing the package
 ======================
 Using pip::
 
-    $ not-yet-available
+    $ pip install django-assessment
 
 Features
 ========
