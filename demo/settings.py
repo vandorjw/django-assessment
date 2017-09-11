@@ -3,7 +3,9 @@ import uuid
 
 gettext = lambda s: s  # noqa
 
-DEBUG = True
+DEBUG = False
+
+ALLOWED_HOSTS = "*"
 
 DATABASES = {
     'default': {
