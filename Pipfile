@@ -15,7 +15,7 @@ django_parler = "*"
 django-parler-rest = "*"
 django-cors-headers ="*"
 django-environ = "*"
-django-rest-auth[with_social] = "*"
+"django-rest-auth[with_social]" = "*"
 django-assessment = "*"
 
 [requires]
