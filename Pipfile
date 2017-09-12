@@ -14,6 +14,7 @@ django-filter = "*"
 django_parler = "*"
 django-parler-rest = "*"
 django-cors-headers ="*"
+django-environ = "*"
 django-assessment = "*"
 
 [requires]
