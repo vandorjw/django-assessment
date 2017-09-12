@@ -1,17 +1,18 @@
+# -*- coding: utf-8 -*-
 import os
 import uuid
+import environ
+
+env = environ.Env()
 
 gettext = lambda s: s  # noqa
 
-DEBUG = False
+DEBUG = env.bool('DJANGO_DEBUG', default=False)
 
-ALLOWED_HOSTS = "*"
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default="*")
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(os.path.dirname(__file__), 'demo.db')
-    }
+    'default': env.db('DATABASE_URL', default='sqlite:////tmp/assessment.db'),
 }
 
 TIME_ZONE = 'UTC'
