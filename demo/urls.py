@@ -9,12 +9,11 @@ from django.views.defaults import server_error
 from django.views.defaults import page_not_found
 from django.views.defaults import permission_denied
 
-from rest_framework.authtoken import views as authtoken_views
-
-
 urlpatterns = [
     url(r'^', include('assessment.urls', namespace='assessment')),
-    url(r'^api-token-auth/', authtoken_views.obtain_auth_token),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls'))
+
 ]
 
 urlpatterns += [
