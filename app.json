@@ -6,6 +6,9 @@ deployed to Heroku.",
   "repository": "https://github.com/vandorjw/django-assessment",
   "keywords": ["python", "django" ],
   "addons": [ "heroku-postgresql" ],
+  "scripts": {
+    "postdeploy": "python manage.py migrate --noinput"
+  },
   "environments": {
     "test": {
       "scripts": {
