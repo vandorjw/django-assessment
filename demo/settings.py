@@ -22,6 +22,7 @@ STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 MEDIA_URL = '/media/'
 
 SECRET_KEY = str(uuid.uuid4())
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -43,13 +44,16 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
     'parler',
+    'allauth',
+    'allauth.account',
+    'rest_auth',
+    'rest_auth.registration',
     'assessment'
 )
 
@@ -110,3 +114,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     )
 }
+
+ACCOUNT_EMAIL_VERIFICATION = False
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = env('EMAIL_HOST', default='localhost')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+EMAIL_PORT = 587
