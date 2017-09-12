@@ -25,6 +25,7 @@ SECRET_KEY = str(uuid.uuid4())
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -74,7 +75,6 @@ USE_L10N = True
 
 LANGUAGE_CODE = 'en'
 
-
 LANGUAGES = [
     ('de', gettext('German')),
     ('en', gettext('English')),
@@ -99,8 +99,9 @@ PARLER_LANGUAGES = {
     }
 }
 
-CORS_ORIGIN_ALLOW_ALL = DEBUG
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+CORS_ORIGIN_ALLOW_ALL = DEBUG
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
