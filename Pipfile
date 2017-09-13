@@ -2,6 +2,9 @@
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 
+[requires]
+python_version = "3.6"
+
 [packages]
 dj-database-url = "*"
 django = "*"
@@ -9,15 +12,13 @@ gunicorn = "*"
 psycopg2 = "*"
 whitenoise = "*"
 djangorestframework = "*"
-Markdown ="*"
+markdown = "*"
 django-filter = "*"
-django_parler = "*"
+django-parler = "*"
 django-parler-rest = "*"
-django-cors-headers ="*"
+django-cors-headers = "*"
 django-environ = "*"
 django-allauth = "*"
-"django-rest-auth[with_social]" = "*"
+"django-rest-auth[with-social]" = "*"
 django-assessment = "*"
-
-[requires]
-python_version = "3.6"
+ipython = "*"
