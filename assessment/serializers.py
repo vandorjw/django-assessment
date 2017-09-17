@@ -36,8 +36,12 @@ class QuestionSerializer(TranslatableModelSerializer):
 
 class SurveySerializer(TranslatableModelSerializer):
     _uid = serializers.UUIDField(label='ID', read_only=True)
-    translations = TranslatedFieldsField(shared_model=Survey)
+    translations = TranslatedFieldsField(shared_model=Survey, write_only=True)
     questions = QuestionSerializer(many=True, read_only=True)
+    is_admin = serializers.SerializerMethodField()
+    in_users = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
+    description = serializers.SerializerMethodField()
 
     class Meta:
         model = Survey
@@ -47,11 +51,50 @@ class SurveySerializer(TranslatableModelSerializer):
             'is_private',
             'start_date_time',
             'end_date_time',
-            'admin',
-            'users',
             'translations',
             'questions',
+            'is_admin',
+            'in_users',
+            'name',
+            'description',
+
         )
+
+    def get_is_admin(self, obj):
+        """
+        The application should never directly report who the admin is.
+        This method reports if the current authenticated user is the admin.
+        """
+        try:
+            user = self.context.get('request').user
+        except Exception:
+            # raise serializers.ValidationError('Could not access request.user')
+            return False
+        if user == obj.admin:
+            return True
+        else:
+            return False
+
+    def get_in_users(self, obj):
+        """
+        The application should never directly report the entire user group.
+        This method reports if the current authenticated user is users.
+        """
+        try:
+            user = self.context.get('request').user
+        except Exception:
+            # raise serializers.ValidationError('Could not access request.user')
+            return False
+        if user in obj.users.all():
+            return True
+        else:
+            return False
+
+    def get_name(self, obj):
+        return obj.name
+
+    def get_description(self, obj):
+        return obj.description
 
 
 class ChoiceSerializer(TranslatableModelSerializer):
