@@ -6,6 +6,7 @@ verify_ssl = true
 python_version = "3.6"
 
 [packages]
+
 dj-database-url = "*"
 django = "*"
 gunicorn = "*"
@@ -23,3 +24,4 @@ django-allauth = "*"
 django-assessment = "*"
 ipython = "*"
 newrelic = "*"
+twine = "*"
