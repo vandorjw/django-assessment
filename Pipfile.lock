@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "abda0c1d9145f8d65153060dc56ebb117b4fa3d0dc68276575b271eed50c81dc"
+            "sha256": "89aec12c12e88ebd5e9695fde2ff042af3e84aded041ed44592c6c263d00dbab"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -131,6 +131,10 @@
                 "sha256:de8ac68b3cf6dd41b98e01dcc92dc0022a5958f096eafc181a17fa975d18ca42"
             ],
             "version": "==3.6.4"
+        },
+        "e1839a8": {
+            "editable": true,
+            "file": "."
         },
         "gunicorn": {
             "hashes": [
@@ -307,10 +311,10 @@
         },
         "six": {
             "hashes": [
-                "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1",
-                "sha256:105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+                "sha256:832dc0e10feb1aa2c68dcc57dbb658f1c7e65b9b61af69048abc87a2db00a0eb",
+                "sha256:70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9"
             ],
-            "version": "==1.10.0"
+            "version": "==1.11.0"
         },
         "tqdm": {
             "hashes": [

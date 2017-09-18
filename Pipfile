@@ -25,3 +25,4 @@ django-assessment = "*"
 ipython = "*"
 newrelic = "*"
 twine = "*"
+e1839a8 = {editable = true, file = "."}
