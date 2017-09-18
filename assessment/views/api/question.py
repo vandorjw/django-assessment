@@ -43,7 +43,7 @@ def create_question(request):
     create a question for a survey
     """
     if request.user.is_authenticated:
-        serializer = QuestionSerializer(data=request.data)
+        serializer = QuestionSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
