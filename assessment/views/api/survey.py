@@ -21,8 +21,6 @@ def create_survey(request):
 
 @api_view(['PUT', ])
 def update_survey(request, uuid):
-    """
-    """
     if request.user.is_authenticated:
         try:
             survey = Survey.objects.get(pk=uuid)
@@ -30,7 +28,7 @@ def update_survey(request, uuid):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         if request.user == survey.admin:
-            serializer = SurveySerializer(survey, data=request.data)
+            serializer = SurveySerializer(survey, data=request.data, context={'request': request})
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
