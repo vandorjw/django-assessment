@@ -18,7 +18,7 @@ class QuestionSerializer(TranslatableModelSerializer):
     translations = TranslatedFieldsField(shared_model=Question)
     url = serializers.HyperlinkedIdentityField(
         read_only=True,
-        view_name='assessment:api:retrieve_question',
+        view_name='assessment-api:retrieve_question',
         lookup_field='pk',
         lookup_url_kwarg='uuid',
     )

@@ -37,15 +37,15 @@ class ResultTests(APITestCase):
 
     def test_getlist_unauthenticated(self):
         self.client.logout()
-        response = self.client.get(reverse('assessment:api:list_results'))
+        response = self.client.get(reverse('assessment-api:list_results'))
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_create_response_unauthenticated(self):
         self.client.logout()
-        response = self.client.get(reverse('assessment:api:list_results'))
+        response = self.client.get(reverse('assessment-api:list_results'))
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_getlist_authenticated(self):
         self.client.login(username='bob', password='top_secret')
-        response = self.client.get(reverse('assessment:api:list_results'))
+        response = self.client.get(reverse('assessment-api:list_results'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)

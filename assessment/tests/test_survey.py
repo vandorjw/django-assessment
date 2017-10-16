@@ -31,7 +31,7 @@ class SurveyTests(APITestCase):
         """
         Ensure we can create a new survey object.
         """
-        url = reverse('assessment:api:create_survey')
+        url = reverse('assessment-api:create_survey')
         data = {
             "translations": {
                 "de": {
