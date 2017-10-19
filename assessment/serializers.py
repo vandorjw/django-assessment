@@ -16,6 +16,7 @@ from assessment.models import (
 class QuestionSerializer(TranslatableModelSerializer):
     _uid = serializers.UUIDField(label='ID', read_only=True)
     translations = TranslatedFieldsField(shared_model=Question)
+    question = serializers.SerializerMethodField()
     url = serializers.HyperlinkedIdentityField(
         read_only=True,
         view_name='assessment-api:retrieve_question',
@@ -31,7 +32,11 @@ class QuestionSerializer(TranslatableModelSerializer):
             'of_type',
             'translations',
             'url',
+            'question',
         )
+
+    def get_question(self, obj):
+        return obj.question
 
 
 class SurveySerializer(TranslatableModelSerializer):
@@ -40,6 +45,7 @@ class SurveySerializer(TranslatableModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
     is_admin = serializers.SerializerMethodField()
     in_users = serializers.SerializerMethodField()
+    user_survey_status = serializers.SerializerMethodField()
     name = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
 
@@ -55,10 +61,30 @@ class SurveySerializer(TranslatableModelSerializer):
             'questions',
             'is_admin',
             'in_users',
+            'user_survey_status',
             'name',
             'description',
-
         )
+
+    def get_user_survey_status(self, obj):
+        """
+        When an authenticated user request survey details,
+        it should include if the survey has been started, completed, etc.
+        """
+        try:
+            user = self.context.get('request').user
+        except Exception:
+            # raise serializers.ValidationError('Could not access request.user')
+            return 'error'
+        try:
+            result = Result.objects.get(survey=obj, user=user)
+        except Result.DoesNotExist:
+            return 'unstarted'
+
+        if result.answers.count() == obj.questions.count():
+            return 'complete'
+        else:
+            return 'incomplete'
 
     def get_is_admin(self, obj):
         """
