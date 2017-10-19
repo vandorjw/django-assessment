@@ -6,5 +6,5 @@ from rest_framework.test import APITestCase
 
 class QuestionTests(APITestCase):
     def test_getlist(self):
-        response = self.client.get(reverse('assessment:api:list_questions'))
+        response = self.client.get(reverse('assessment-api:list_questions'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
