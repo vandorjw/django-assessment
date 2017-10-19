@@ -62,7 +62,7 @@ class SurveyTests(APITestCase):
         """
         Ensure we can create a new survey object.
         """
-        url = reverse('assessment:api:create_survey')
+        url = reverse('assessment-api:create_survey')
         data = {
             "translations": {
                 "de": {
@@ -90,5 +90,5 @@ class SurveyTests(APITestCase):
         self.assertEqual(Survey.objects.get().name, 'Hello World')
 
     def test_getlist(self):
-        response = self.client.get(reverse('assessment:api:list_surveys'))
+        response = self.client.get(reverse('assessment-api:list_surveys'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
