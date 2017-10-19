@@ -70,9 +70,9 @@ class Survey(TranslatableModel):
 
 class Question(TranslatableModel):
 
-    TRUEFALSE = 1
-    MULTIPLE_CHOICE = 2
-    TEXT = 3
+    TRUEFALSE = "tf"
+    MULTIPLE_CHOICE = "mc"
+    TEXT = "txt"
 
     QUESTION_TYPE = (
         (TRUEFALSE, _('true or false')),
@@ -87,7 +87,7 @@ class Question(TranslatableModel):
     )
 
     translations = TranslatedFields(
-        question=models.CharField(_("question"), max_length=512),
+        question=models.TextField(_("question")),
     )
 
     survey = models.ForeignKey(
@@ -101,8 +101,9 @@ class Question(TranslatableModel):
         default=False,
     )
 
-    of_type = models.IntegerField(
+    of_type = models.CharField(
         _("type"),
+        max_length=3,
         choices=QUESTION_TYPE,
         default=TRUEFALSE,
     )
