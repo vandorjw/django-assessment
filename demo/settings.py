@@ -21,7 +21,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 MEDIA_URL = '/media/'
 
-SECRET_KEY = str(uuid.uuid4())
+SECRET_KEY = env('SECRET_KEY', default=str(uuid.uuid4()))
 SITE_ID = 1
 
 MIDDLEWARE = [
