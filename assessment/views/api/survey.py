@@ -51,7 +51,7 @@ def retrieve_survey(request, uuid):
 
     if survey.is_private:
         if request.user.is_authenticated:
-            if request.user == result.admin or request.user in survey.users.all():
+            if request.user == survey.admin or request.user in survey.users.all():
                 serializer = SurveySerializer(survey, context={'request': request})
                 return Response(serializer.data)
             else:

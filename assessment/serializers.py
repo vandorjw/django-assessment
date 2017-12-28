@@ -41,13 +41,13 @@ class QuestionSerializer(TranslatableModelSerializer):
 
 class SurveySerializer(TranslatableModelSerializer):
     _uid = serializers.UUIDField(label='ID', read_only=True)
-    translations = TranslatedFieldsField(shared_model=Survey, write_only=True)
+    translations = TranslatedFieldsField(shared_model=Survey)
     questions = QuestionSerializer(many=True, read_only=True)
     is_admin = serializers.SerializerMethodField()
     in_users = serializers.SerializerMethodField()
-    user_survey_status = serializers.SerializerMethodField()
-    name = serializers.SerializerMethodField()
-    description = serializers.SerializerMethodField()
+    user_survey_status = serializers.SerializerMethodField(read_only=True)
+    name = serializers.SerializerMethodField(read_only=True)
+    description = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Survey
