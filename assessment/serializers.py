@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from parler_rest.serializers import (
     TranslatableModelSerializer,
@@ -76,6 +77,10 @@ class SurveySerializer(TranslatableModelSerializer):
         except Exception:
             # raise serializers.ValidationError('Could not access request.user')
             return 'error'
+
+        if user.id is None:
+            return 'anonymous user'
+
         try:
             result = Result.objects.get(survey=obj, user=user)
         except Result.DoesNotExist:
@@ -117,10 +122,16 @@ class SurveySerializer(TranslatableModelSerializer):
             return False
 
     def get_name(self, obj):
-        return obj.name
+        try:
+            return obj.name
+        except ObjectDoesNotExist:
+            return str(obj.pk)
 
     def get_description(self, obj):
-        return obj.description
+        try:
+            return obj.description
+        except ObjectDoesNotExist:
+            return str(obj.pk)
 
 
 class ChoiceSerializer(TranslatableModelSerializer):
