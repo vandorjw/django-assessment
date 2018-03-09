@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import ugettext as _
 from rest_framework import serializers
 from parler_rest.serializers import (
     TranslatableModelSerializer,
@@ -16,7 +18,8 @@ from assessment.models import (
 class QuestionSerializer(TranslatableModelSerializer):
     _uid = serializers.UUIDField(label='ID', read_only=True)
     translations = TranslatedFieldsField(shared_model=Question)
-    question = serializers.SerializerMethodField()
+    text = serializers.SerializerMethodField()
+    result = serializers.SerializerMethodField(read_only=True)
     url = serializers.HyperlinkedIdentityField(
         read_only=True,
         view_name='assessment-api:retrieve_question',
@@ -29,14 +32,34 @@ class QuestionSerializer(TranslatableModelSerializer):
         fields = (
             '_uid',
             'survey',
+            'result',
             'of_type',
             'translations',
             'url',
-            'question',
+            'text',
         )
 
-    def get_question(self, obj):
-        return obj.question
+    def get_result(self, obj):
+        try:
+            user = self.context.get('request').user
+        except Exception:
+            return None
+
+        if user.id is None:
+            return None
+
+        try:
+            result = Result.objects.get(survey=obj.survey, user=user)
+        except Result.DoesNotExist:
+            return None
+        else:
+            return str(result.pk)
+
+    def get_text(self, obj):
+        try:
+            return obj.question
+        except ObjectDoesNotExist:
+            return _("Translation does not exist for your current language.")
 
 
 class SurveySerializer(TranslatableModelSerializer):
@@ -45,7 +68,7 @@ class SurveySerializer(TranslatableModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
     is_admin = serializers.SerializerMethodField()
     in_users = serializers.SerializerMethodField()
-    user_survey_status = serializers.SerializerMethodField(read_only=True)
+    result = serializers.SerializerMethodField(read_only=True)
     name = serializers.SerializerMethodField(read_only=True)
     description = serializers.SerializerMethodField(read_only=True)
 
@@ -61,12 +84,12 @@ class SurveySerializer(TranslatableModelSerializer):
             'questions',
             'is_admin',
             'in_users',
-            'user_survey_status',
+            'result',
             'name',
             'description',
         )
 
-    def get_user_survey_status(self, obj):
+    def get_result(self, obj):
         """
         When an authenticated user request survey details,
         it should include if the survey has been started, completed, etc.
@@ -74,17 +97,35 @@ class SurveySerializer(TranslatableModelSerializer):
         try:
             user = self.context.get('request').user
         except Exception:
-            # raise serializers.ValidationError('Could not access request.user')
-            return 'error'
+            return {
+                "status": "error",
+                "result_id": None
+            }
+
+        if user.id is None:
+            return {
+                "status": "anonymous",
+                "result_id": None
+            }
+
         try:
             result = Result.objects.get(survey=obj, user=user)
         except Result.DoesNotExist:
-            return 'unstarted'
+            return {
+                "status": "unstarted",
+                "result_id": None
+            }
 
         if result.answers.count() == obj.questions.count():
-            return 'complete'
+            return {
+                "status": "complete",
+                "result_id": str(result.pk)
+            }
         else:
-            return 'incomplete'
+            return {
+                "status": "incomplete",
+                "result_id": str(result.pk)
+            }
 
     def get_is_admin(self, obj):
         """
@@ -117,10 +158,16 @@ class SurveySerializer(TranslatableModelSerializer):
             return False
 
     def get_name(self, obj):
-        return obj.name
+        try:
+            return obj.name
+        except ObjectDoesNotExist:
+            return str(obj.pk)
 
     def get_description(self, obj):
-        return obj.description
+        try:
+            return obj.description
+        except ObjectDoesNotExist:
+            return str(obj.pk)
 
 
 class ChoiceSerializer(TranslatableModelSerializer):

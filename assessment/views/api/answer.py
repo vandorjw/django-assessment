@@ -24,7 +24,6 @@ def create_answer(request):
             try:
                 serializer.save()
             except Exception as error:
-                print(error)
                 return Response("Valid but failed to save", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             else:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
