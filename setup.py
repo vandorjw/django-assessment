@@ -34,8 +34,8 @@ setup(
     license=assessment.__license__,
     include_package_data=True,
     zip_safe=False,
-    install_requires = [
-        "Django>=1.8,<2.0",
+    install_requires=[
+        "Django>=2.0",
         "djangorestframework>=3.4",
         "Markdown>=2.6",
         "django-filter>=1.0",
