@@ -10,7 +10,6 @@ from django.utils.translation import ugettext as _
 
 
 class Survey(TranslatableModel):
-
     _uid = models.UUIDField(
         primary_key=True,
         editable=False,
@@ -69,7 +68,6 @@ class Survey(TranslatableModel):
 
 
 class Question(TranslatableModel):
-
     TRUEFALSE = "tf"
     MULTIPLE_CHOICE = "mc"
     TEXT = "txt"
@@ -93,7 +91,8 @@ class Question(TranslatableModel):
     survey = models.ForeignKey(
         Survey,
         related_name='questions',
-        verbose_name=_("survey")
+        verbose_name=_("survey"),
+        on_delete=models.CASCADE,
     )
 
     is_required = models.BooleanField(
@@ -118,7 +117,6 @@ class Question(TranslatableModel):
 
 
 class Choice(TranslatableModel):
-
     _uid = models.UUIDField(
         primary_key=True,
         editable=False,
@@ -133,6 +131,7 @@ class Choice(TranslatableModel):
         Question,
         related_name='choices',
         verbose_name=_("question"),
+        on_delete=models.CASCADE,
     )
 
     is_correct = models.BooleanField(
@@ -150,7 +149,6 @@ class Choice(TranslatableModel):
 
 
 class Result(models.Model):
-
     _uid = models.UUIDField(
         primary_key=True,
         editable=False,
@@ -166,12 +164,14 @@ class Result(models.Model):
         Survey,
         related_name='results',
         verbose_name=_("survey"),
+        on_delete=models.CASCADE,
     )
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='results',
         verbose_name=_("user"),
+        on_delete=models.CASCADE,
     )
 
     class Meta:
@@ -194,7 +194,6 @@ class Result(models.Model):
 
 
 class Answer(models.Model):
-
     _uid = models.UUIDField(
         primary_key=True,
         editable=False,
@@ -205,12 +204,14 @@ class Answer(models.Model):
         Result,
         related_name='answers',
         verbose_name=_("result"),
+        on_delete=models.CASCADE,
     )
 
     question = models.ForeignKey(
         Question,
         related_name='answers',
         verbose_name=_("question"),
+        on_delete=models.CASCADE,
     )
 
     answer = models.TextField(
