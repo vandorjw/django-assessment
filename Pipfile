@@ -6,7 +6,6 @@ verify_ssl = true
 python_version = "3.6"
 
 [packages]
-
 dj-database-url = "*"
 django = "*"
 gunicorn = "*"
@@ -21,8 +20,10 @@ django-cors-headers = "*"
 django-environ = "*"
 django-allauth = "*"
 "django-rest-auth[with-social]" = "*"
-django-assessment = "*"
 ipython = "*"
 newrelic = "*"
 twine = "*"
-e1839a8 = {editable = true, file = "."}
+"e1839a8" = {editable = true, path = "."}
+
+[dev-packages]
+pylint = "*"
