@@ -55,7 +55,7 @@ def list_results(request):
     Generate a list of all survey results for the authenticated user.
     If there is no authenticated user, return 401 UNAUTHORIZED.
     """
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         results = Result.objects.filter(user=request.user)
         serializer = ResultSerializer(results, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
