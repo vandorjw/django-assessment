@@ -28,10 +28,6 @@ script:
 notifications:
   email: false
 
-branches:
-  only:
-    - master
-
 after_success:
   - coveralls
 

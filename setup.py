@@ -34,7 +34,7 @@ setup(
     license=assessment.__license__,
     include_package_data=True,
     zip_safe=False,
-    install_requires = [
+    install_requires=[
         "Django>=2.0",
         "djangorestframework>=3.4",
         "Markdown>=2.6",

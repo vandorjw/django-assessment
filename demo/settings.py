@@ -93,10 +93,10 @@ LANGUAGES = [
 PARLER_DEFAULT_LANGUAGE_CODE = LANGUAGE_CODE
 PARLER_LANGUAGES = {
     None: (
-        {'code': 'de',},
-        {'code': 'en',},
-        {'code': 'fr',},
-        {'code': 'nl',},
+        {'code': 'de'},
+        {'code': 'en'},
+        {'code': 'fr'},
+        {'code': 'nl'},
     ),
     'default': {
         'fallbacks': [LANGUAGE_CODE],
@@ -126,6 +126,9 @@ if TESTING:
 
 
 ACCOUNT_EMAIL_VERIFICATION = False
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = env('EMAIL_HOST', default='localhost')

@@ -10,7 +10,6 @@ from django.utils.translation import ugettext as _
 
 
 class Survey(TranslatableModel):
-
     _uid = models.UUIDField(
         primary_key=True,
         editable=False,
@@ -69,7 +68,6 @@ class Survey(TranslatableModel):
 
 
 class Question(TranslatableModel):
-
     TRUEFALSE = "tf"
     MULTIPLE_CHOICE = "mc"
     TEXT = "txt"
@@ -119,7 +117,6 @@ class Question(TranslatableModel):
 
 
 class Choice(TranslatableModel):
-
     _uid = models.UUIDField(
         primary_key=True,
         editable=False,
@@ -152,7 +149,6 @@ class Choice(TranslatableModel):
 
 
 class Result(models.Model):
-
     _uid = models.UUIDField(
         primary_key=True,
         editable=False,
@@ -198,7 +194,6 @@ class Result(models.Model):
 
 
 class Answer(models.Model):
-
     _uid = models.UUIDField(
         primary_key=True,
         editable=False,

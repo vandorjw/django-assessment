@@ -7,11 +7,11 @@ python_version = "3.6"
 
 [packages]
 dj-database-url = "*"
-django = "*"
+Django = "*"
 gunicorn = "*"
 whitenoise = "*"
 djangorestframework = "*"
-markdown = "*"
+Markdown = "*"
 django-filter = "*"
 django-parler = "*"
 django-parler-rest = "*"
