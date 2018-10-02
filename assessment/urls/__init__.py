@@ -4,5 +4,5 @@ from django.conf.urls import include
 
 
 urlpatterns = [
-    url(r'^api/', include('assessment.urls.api', namespace='assessment-api')),
+    url(r'^api/', include(('assessment.urls.api', 'assessment-api'), namespace='assessment-api')),
 ]

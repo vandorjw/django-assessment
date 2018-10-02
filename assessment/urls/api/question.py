@@ -24,4 +24,9 @@ urlpatterns = [
         view=question.retrieve_question,
         name='retrieve_question',
     ),
+    url(
+        regex=r'^delete/(?P<uuid>[-\w]+)/$',
+        view=question.delete_question,
+        name='delete_question',
+    ),
 ]

@@ -24,4 +24,9 @@ urlpatterns = [
         view=survey.retrieve_survey,
         name='retrieve_survey',
     ),
+    url(
+        regex=r'^delete/(?P<uuid>[-\w]+)/$',
+        view=survey.delete_survey,
+        name='delete_survey',
+    ),
 ]

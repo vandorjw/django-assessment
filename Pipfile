@@ -19,8 +19,11 @@ django-cors-headers = "*"
 django-environ = "*"
 django-allauth = "*"
 "django-rest-auth[with-social]" = "*"
-django-assessment = "*"
 ipython = "*"
 newrelic = "*"
 twine = "*"
+"e1839a8" = {editable = true, path = "."}
 "psycopg2" = "*"
+
+[dev-packages]
+pylint = "*"
