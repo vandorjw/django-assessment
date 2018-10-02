@@ -24,4 +24,9 @@ urlpatterns = [
         view=choice.retrieve_choice,
         name='retrieve_choice',
     ),
+    url(
+        regex=r'^delete/(?P<uuid>[-\w]+)/$',
+        view=choice.delete_choice,
+        name='delete_choice',
+    ),
 ]

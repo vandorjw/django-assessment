@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -77,3 +78,25 @@ def list_surveys(request):
         surveys = Survey.objects.filter(is_private=False)
     serializer = SurveySerializer(surveys, many=True, context={'request': request})
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['DELETE', ])
+def delete_survey(request, uuid):
+    """
+    delete a single survey if the request is from the survey admin
+    """
+
+    if request.user.is_authenticated:
+        try:
+            survey = Survey.objects.get(pk=uuid, admin=request.user)
+        except (Survey.DoesNotExist, ValueError):
+            return Response({"error": "Survey not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            survey.delete()
+            return Response({"msg": f"Survey {uuid} deleted successfully"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            logging.exception(error)
+            return Response({"error": "Unable to delete survey."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response({"error": "please login"}, status.HTTP_401_UNAUTHORIZED)
