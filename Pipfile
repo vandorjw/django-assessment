@@ -9,7 +9,6 @@ python_version = "3.6"
 dj-database-url = "*"
 django = "*"
 gunicorn = "*"
-psycopg2 = "*"
 whitenoise = "*"
 djangorestframework = "*"
 markdown = "*"
@@ -24,6 +23,7 @@ ipython = "*"
 newrelic = "*"
 twine = "*"
 "e1839a8" = {editable = true, path = "."}
+"psycopg2" = "*"
 
 [dev-packages]
 pylint = "*"
