@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -68,3 +69,25 @@ def list_questions(request):
     if request.method == 'GET':
         response_data = {"details": "not implemented"}
         return Response(response_data, status=status.HTTP_200_OK)
+
+
+@api_view(['DELETE', ])
+def delete_question(request, uuid):
+    """
+    delete a single question if the request is from the question owner
+    """
+
+    if request.user.is_authenticated:
+        try:
+            question = Question.objects.get(pk=uuid, admin=request.user)
+        except (Question.DoesNotExist, ValueError):
+            return Response({"error": "Question not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            question.delete()
+            return Response({"msg": f"Question {uuid} deleted successfully"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            logging.exception(error)
+            return Response({"error": "Unable to delete question."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response({"error": "please login"}, status.HTTP_401_UNAUTHORIZED)
