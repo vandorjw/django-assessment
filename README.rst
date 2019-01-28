@@ -8,9 +8,9 @@ Django-Assessment
 .. image:: https://coveralls.io/repos/github/vandorjw/django-assessment/badge.svg?branch=master
     :target: https://coveralls.io/github/vandorjw/django-assessment?branch=master
     :alt: Coveralls Status
-.. image:: https://sonarcloud.io/api/badges/gate?key=vandorjw.django-assessment
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=vandorjw.django-assessment&metric=alert_status
     :target: https://sonarcloud.io/dashboard?id=vandorjw.django-assessment
-    :alt: Sonarcloud Status
+    :alt: Quality Gate Status
 .. image:: https://requires.io/github/vandorjw/django-assessment/requirements.svg?branch=master
     :target: https://requires.io/github/vandorjw/django-assessment/requirements/?branch=master
     :alt: Requirements Status
