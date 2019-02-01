@@ -16,6 +16,9 @@ push:
 	docker push localhost:32000/vandorjw/django-assessment
 
 deploy:
+	docker build -t localhost:32000/vandorjw/django-assessment .
+	docker push localhost:32000/vandorjw/django-assessment
+	kubectl delete deployment django-assessment-deployment
 	kubectl apply -f k8s/deployment.yml
 
 test:
