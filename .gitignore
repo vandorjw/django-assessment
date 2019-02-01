@@ -63,5 +63,8 @@ db.sqlite3
 .env
 
 demo/static/*
+demo/public/*
+
 .venv
 .vscode
+*.code-workspace

@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: django-assessment-service
+spec:
+  selector:
+    app: django-assessment
+  type: NodePort
+  ports:
+    - name: assessment-api
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
