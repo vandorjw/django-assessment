@@ -107,8 +107,8 @@ PARLER_LANGUAGES = {
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ORIGIN_WHITELIST = (
-    'vandorjw.github.io',
-    'localhost:8080',
+    'https://vandorjw.github.io',
+    'http://localhost:8080',
 )
 
 REST_FRAMEWORK = {
