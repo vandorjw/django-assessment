@@ -23,7 +23,7 @@ addons:
 
 script:
   - coverage run `which django-admin.py` test
-  - sonar-scanner
+  # - sonar-scanner
 
 notifications:
   email: false
