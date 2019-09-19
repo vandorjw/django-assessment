@@ -19,7 +19,7 @@ DATABASES = {
 TIME_ZONE = 'UTC'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
+STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'public/')
 MEDIA_URL = '/media/'
 
 SECRET_KEY = env('SECRET_KEY', default=str(uuid.uuid4()))
@@ -107,8 +107,8 @@ PARLER_LANGUAGES = {
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ORIGIN_WHITELIST = (
-    'vandorjw.github.io',
-    'localhost:8080',
+    'https://vandorjw.github.io',
+    'http://localhost:8080',
 )
 
 REST_FRAMEWORK = {

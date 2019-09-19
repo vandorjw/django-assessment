@@ -1,0 +1,32 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-assessment-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: django-assessment
+  template:
+    metadata:
+      labels:
+        app: django-assessment
+    spec:
+      containers:
+      - name: django-assessment
+        image: localhost:32000/vandorjw/django-assessment
+        imagePullPolicy: Always
+        env:
+          - name: "DATABASE_URL"
+            value: "postgresql://django:django@10.152.183.70:5432/django"
+          - name: "DJANGO_DEBUG"
+            value: "True"
+          - name: "DJANGO_SETTINGS_MODULE"
+            value: "demo.settings"
+          - name: "PYTHONPATH"
+            value: "/app"
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+          name: dashboard
