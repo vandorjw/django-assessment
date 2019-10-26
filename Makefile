@@ -13,6 +13,8 @@ run:
 clean:
 	$(docker) stop local-django-assessment
 	$(docker) rm local-django-assessment
+	$(docker) stop local-django-assessment-test
+	$(docker) rm local-django-assessment-test
 
 push:
 	microk8s.ctr image push localhost:32000/vandorjw/django-assessment:latest
@@ -44,15 +46,8 @@ reload:
 
 test:
 	$(docker) run --name local-django-assessment-test \
-	-e DJANGO_TESTING=True \
+	-e DJANGO_TESTING=true \
 	-e DJANGO_SETTINGS_MODULE=demo.settings \
 	-e PYTHONPATH=/app \
 	localhost:32000/vandorjw/django-assessment \
-	/usr/local/bin/django-admin.py check
-
-stop:
-	$(docker) stop local-django-assessment-test
-	$(docker) rm local-django-assessment-test
-
-
-
+	/usr/local/bin/django-admin.py test
