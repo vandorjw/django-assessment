@@ -5,9 +5,11 @@ metadata:
 spec:
   selector:
     app: django-assessment
-  type: NodePort
   ports:
     - name: assessment-api
       protocol: TCP
       port: 5000
       targetPort: 5000
+  externalIPs:
+    - 192.168.1.233
+
