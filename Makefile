@@ -3,6 +3,9 @@ docker = docker
 build:
 	$(docker) build -t localhost:32000/vandorjw/django-assessment .
 
+# Hi there,
+# Are you missing a .env file?
+# Please take a look at the 'test' command for common env variables.
 run:
 	$(docker) run --name local-django-assessment \
 	-d \
