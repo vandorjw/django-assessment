@@ -1,6 +1,7 @@
 FROM python:3.6.8
 
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
 ENV SHELL=/bin/bash
 
 RUN useradd -c 'pyuser' --home-dir /app -s /bin/bash pyuser
