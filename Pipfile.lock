@@ -180,9 +180,9 @@
         },
         "newrelic": {
             "hashes": [
-                "sha256:da9adab674d9fe7aa8fbabb6691b33fb7be94a32b6a80548ec7018be9df8ef65"
+                "sha256:0e651f2ff48dd1fc538fc1297892cf726d1ad4fc0b2578aae6a47f10f16afb2c"
             ],
-            "version": "==5.2.1.129"
+            "version": "==5.4.1.134"
         },
         "oauthlib": {
             "hashes": [
