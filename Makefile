@@ -1,7 +1,7 @@
 docker = docker
 
 build:
-	$(docker) build -t vandorjw/django-assessment:local .
+	$(docker) build -t localhost:32000/vandorjw/django-assessment:local .
 
 # Hi there,
 # Are you missing a .env file?
@@ -11,7 +11,7 @@ run:
 	-d \
 	-p 5678:5000 \
 	--env-file ./.env \
-	vandorjw/django-assessment:local
+	localhost:32000/vandorjw/django-assessment:local
 
 clean:
 	$(docker) stop local-django-assessment
@@ -20,14 +20,14 @@ clean:
 	$(docker) rm local-django-assessment-test
 
 push:
-	microk8s.ctr image push vandorjw/django-assessment:latest
+	microk8s.ctr image push vandorjw/django-assessment
 
 pull:
 	microk8s.ctr image pull vandorjw/django-assessment:local
 
 deploy:
-	$(docker) build -t vandorjw/django-assessment:local .
-	microk8s.ctr image push vandorjw/django-assessment:local
+	$(docker) build -t localhost:32000/vandorjw/django-assessment:local .
+	$(docker) push localhost:32000/vandorjw/django-assessment
 	microk8s.kubectl delete pods -l app=django-assessment
 	microk8s.kubectl apply -f k8s/deployment.yml
 	microk8s.kubectl apply -f k8s/service.yml

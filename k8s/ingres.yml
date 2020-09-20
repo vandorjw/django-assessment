@@ -1,13 +1,16 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: django-assessment-ingress
 spec:
   rules:
-  - host: django-assessment.vandorp.home
+  - host: "django-assessment.vandorp.home"
     http:
       paths:
-      - path: /
+      - pathType: Prefix
+        path: "/"
         backend:
-          serviceName: django-assessment-service
-          servicePort: 5000
+          service:
+            name: django-assessment-service
+            port:
+              number: 5000
