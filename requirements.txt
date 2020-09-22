@@ -1,0 +1,10 @@
+django==2.2.*
+djangorestframework==3.11.*
+django-parler==2.2.*
+dj-database-url
+whitenoise
+django-parler-rest
+django-environ
+django-cors-headers
+django-allauth
+django-rest-auth[with-social]
