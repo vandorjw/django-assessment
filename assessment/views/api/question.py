@@ -55,20 +55,14 @@ def create_question(request):
 
 @api_view(['PUT', ])
 def update_question(request, uuid):
-    """
-    """
-    if request.method == 'PUT':
-        response_data = {"details": "not implemented"}
-        return Response(response_data, status=status.HTTP_200_OK)
+    response_data = {"details": "not implemented"}
+    return Response(response_data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET', ])
 def list_questions(request):
-    """
-    """
-    if request.method == 'GET':
-        response_data = {"details": "not implemented"}
-        return Response(response_data, status=status.HTTP_200_OK)
+    response_data = {"details": "not implemented"}
+    return Response(response_data, status=status.HTTP_200_OK)
 
 
 @api_view(['DELETE', ])

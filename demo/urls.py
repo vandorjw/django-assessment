@@ -10,7 +10,7 @@ from django.views.defaults import page_not_found
 from django.views.defaults import permission_denied
 
 urlpatterns = [
-    url(r'^', include('assessment.urls')),
+    url(r'^assessment/', include('assessment.urls')),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls'))
 
