@@ -67,5 +67,4 @@ demo/public/*
 
 venv/
 .venv
-.vscode
 *.code-workspace
