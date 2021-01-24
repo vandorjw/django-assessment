@@ -1,7 +1,6 @@
 {
   "name": "Start on Heroku: Python",
-  "description": "A barebones Python app, which can easily be o
-deployed to Heroku.",
+  "description": "A barebones Python app, which can easily be deployed to Heroku.",
   "image": "heroku/python",
   "repository": "https://github.com/vandorjw/django-assessment",
   "keywords": ["python", "django" ],

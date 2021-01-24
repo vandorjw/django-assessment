@@ -1,0 +1,29 @@
+version: "3.9"
+   
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=assessment
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+
+  web:
+    build: 
+      context: .
+      target: debug
+    volumes:
+      - ./demo:/app/demo
+      - ./assessment:/app/assessment
+    ports:
+      - 5000:5000
+      - 5678:5678
+    depends_on:
+      - db
+    environment: 
+      - DATABASE_URL=postgresql://django:django@db:5432/assessment
+      - DJANGO_DEBUG=True
+      - DJANGO_SETTINGS_MODULE=demo.settings
+      - PYTHONPATH=/app
+      - STATIC_ROOT=/app/public
+    command: python -m debugpy --listen 0.0.0.0:5678 demo/manage.py runserver 0.0.0.0:5000 --nothreading --noreload

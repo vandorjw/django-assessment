@@ -10,7 +10,8 @@ cmd="$@"
 `which django-admin.py` migrate --no-input
 `which django-admin.py` collectstatic --no-input
 
-if [ -z $cmd ]; then
+
+if [[ -z $cmd ]]; then
   gunicorn -b 0.0.0.0:5000 demo.wsgi
 else
   exec $cmd
